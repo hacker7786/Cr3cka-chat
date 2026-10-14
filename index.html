@@ -91,7 +91,7 @@ $("file").addEventListener("change",async e=>{
  if(!["image/png","image/jpeg","image/webp","image/gif"].includes(f.type)){alert("Choose PNG, JPG, WEBP or GIF.");return}
  if(f.size>MAX_IMAGE){alert("Image must be 5 MB or smaller.");return}
  const ext={"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif"}[f.type],path=roomId+"/"+crypto.randomUUID()+"."+ext;status("Uploading image…");
- try{let r=await sb.storage.from("chat-uploads").upload(path,f,{contentType:f.type,upsert:false});if(r.error)throw r.error;
+ try{let r=await sb.storage.from("Chat-Uploads").upload(path,f,{contentType:f.type,upsert:false});if(r.error)throw r.error;
  r=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:"cr3cka-image:"+path});if(r.error)throw r.error;status("Live")}
  catch(e){console.error(e);status("Upload failed");alert("Image upload failed: "+e.message)}
 });
