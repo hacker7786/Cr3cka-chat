@@ -65,7 +65,7 @@ function render(m){
  const a=document.createElement("article");a.className="msg"+(m.user_id===user.id?" mine":"");
  const h=document.createElement("div");h.className="head";const n=document.createElement("strong");n.textContent=m.username||"user";const t=document.createElement("span");t.textContent=new Date(m.created_at).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});h.append(n,t);a.append(h);
  const b=document.createElement("div");b.className="body";
- if(m.content.startsWith("cr3cka-image:")){const p=m.content.slice(13);const img=document.createElement("img");img.alt="Shared image";img.loading="lazy";b.append(img);sb.storage.from("chat-uploads").createSignedUrl(p,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"})}
+ if(m.content.startsWith("cr3cka-image:")){const p=m.content.slice(13);const img=document.createElement("img");img.alt="Shared image";img.loading="lazy";b.append(img);sb.storage.from("Chat-Uploads").createSignedUrl(p,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"})}
  else b.textContent=m.content;
  a.append(b);$("messages").append(a);$("messages").scrollTop=$("messages").scrollHeight;
 }
