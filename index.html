@@ -100,6 +100,8 @@ body.theme-light .hangup{background:#ffedf0;color:#b92e50;border-color:#edb8c4}
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
 <div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden><button id="attach" class="icon" type="button" title="Attach image">＋</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Keep room codes private</div></main></section>
+<div id="join-request-modal" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="join-request-title"><div class="modal"><h2 id="join-request-title">Room access requested</h2><p id="join-request-desc">Waiting for the room admin to approve your request…</p><div id="join-request-actions" class="modal-actions"><button id="cancel-join-request" class="btn secondary" type="button">Cancel</button></div></div></div>
+<div id="admin-requests" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="admin-requests-title"><div class="modal"><h2 id="admin-requests-title">Pending join requests</h2><p>Approve only people you want to let into this room.</p><div id="admin-request-list" class="call-list"></div><div class="modal-actions"><button id="close-admin-requests" class="btn secondary" type="button">Close</button></div></div></div>
 <div id="call-picker" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="picker-title"><div class="modal"><h2 id="picker-title">Start a call</h2><p>Select room members. “Call Everyone” invites every currently connected member.</p><div id="call-list" class="call-list"></div><div class="modal-actions"><button id="picker-cancel" class="btn secondary" type="button">Cancel</button><button id="picker-start" class="btn" type="button">Call selected</button></div></div></div>
 <div id="incoming-call" class="modalback hidden" role="dialog" aria-modal="true"><div class="modal"><h2 id="incoming-title">Incoming call</h2><p id="incoming-desc">A room member is calling you.</p><div class="modal-actions"><button id="call-decline" class="btn secondary" type="button">Decline</button><button id="call-accept" class="btn" type="button">Accept</button></div></div></div>
 <div id="call-stage" class="hidden"><div id="call-head"><div id="call-title">Call in progress</div><div id="call-status" class="muted">Connecting…</div><div style="flex:1"></div><button id="toggle-camera" class="callbtn" type="button">Camera off</button><button id="hangup" class="hangup" type="button">End call</button></div><div id="videos"></div></div>
@@ -119,6 +121,7 @@ const $ = id => document.getElementById(id);
  $("theme-toggle").addEventListener("click",()=>{document.body.classList.toggle("theme-light");try{localStorage.setItem("cr3cka-theme",document.body.classList.contains("theme-light")?"light":"dark")}catch{}update()});update();
 })();
 let user=null, roomId=null, myName="", roomCode="", presenceChannel=null, dbChannel=null;
+let isRoomAdmin=false, joinRequestPoll=null, adminRequestPoll=null, membershipPoll=null, pendingRequestId=null, seenAdminRequests=new Set();
 const sessionId=crypto.randomUUID();
 let roomSessions=[], callMode="audio", activeCall=null, localStream=null, incomingInvite=null, callPeers=new Map(), remoteStreams=new Map(), pendingIce=new Map();
 const RTC_CONFIG={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
@@ -133,25 +136,118 @@ async function auth(){
 }
 async function roomJoin(code,name){
  let r=await sb.rpc("join_chat_room",{p_code:code,p_username:name});
- if(!r.error)return r.data;
- if(!/Room not found/i.test(r.error.message))throw r.error;
- r=await sb.rpc("create_chat_room",{p_code:code,p_username:name});
- if(!r.error)return r.data;
- if(/duplicate key|unique constraint/i.test(r.error.message)){
-   const retry=await sb.rpc("join_chat_room",{p_code:code,p_username:name});if(!retry.error)return retry.data;throw retry.error;
- }throw r.error;
+ if(!r.error)return {roomId:r.data,created:false};
+ if(/Room not found/i.test(r.error.message)){
+   r=await sb.rpc("create_chat_room",{p_code:code,p_username:name});
+   if(!r.error)return {roomId:r.data,created:true};
+   if(/duplicate key|unique constraint/i.test(r.error.message)){
+     r=await sb.rpc("join_chat_room",{p_code:code,p_username:name});
+     if(!r.error)return {roomId:r.data,created:false};
+   }
+ }
+ if(/Approval required/i.test(r.error.message)){
+   const req=await sb.rpc("request_chat_join",{p_code:code,p_username:name});
+   if(req.error)throw req.error;
+   return {requestId:req.data,requested:true};
+ }
+ throw r.error;
 }
+async function waitForApproval(requestId,code,name){
+ pendingRequestId=requestId;
+ $("join-request-desc").textContent="Your request is waiting for the room admin. You cannot read messages or files until approved.";
+ $("join-request-modal").classList.remove("hidden");
+ if(joinRequestPoll)clearInterval(joinRequestPoll);
+ const check=async()=>{
+   if(!pendingRequestId)return;
+   const {data,error}=await sb.rpc("get_chat_join_request",{p_request_id:pendingRequestId});
+   if(error){console.warn("Join request check:",error.message);return}
+   const row=Array.isArray(data)?data[0]:data;
+   if(!row)return;
+   if(row.status==="approved"){
+     clearInterval(joinRequestPoll);joinRequestPoll=null;pendingRequestId=null;
+     $("join-request-modal").classList.add("hidden");
+     await enterRoom(row.room_id,code,name);
+   }else if(row.status==="rejected"){
+     clearInterval(joinRequestPoll);joinRequestPoll=null;pendingRequestId=null;
+     $("join-request-modal").classList.add("hidden");
+     err("The room admin rejected your request. You are not allowed to enter this room.");
+   }
+ };
+ await check();
+ if(pendingRequestId)joinRequestPoll=setInterval(check,2500);
+}
+async function enterRoom(id,code,name){
+ roomId=id;myName=name;roomCode=code;
+ const room=await sb.from("chat_rooms").select("admin_user_id").eq("id",roomId).maybeSingle();
+ if(room.error)throw room.error;
+ isRoomAdmin=!!room.data && room.data.admin_user_id===user.id;
+ $("room-display").textContent=code;$("title").textContent=code;
+ $("join").classList.add("hidden");$("chat").classList.remove("hidden");
+ await history();await watchMessages();await watchPresence();
+ if(membershipPoll)clearInterval(membershipPoll);
+ membershipPoll=setInterval(checkRoomMembership,5000);
+ await refreshAdminRequests();
+ if(adminRequestPoll)clearInterval(adminRequestPoll);
+ if(isRoomAdmin)adminRequestPoll=setInterval(refreshAdminRequests,3000);
+ status(isRoomAdmin?"Live · Admin":"Live");
+}
+async function checkRoomMembership(){
+ if(!roomId||!user)return;
+ const checkedRoomId=roomId;
+ const {data,error}=await sb.from("chat_members").select("user_id").eq("room_id",checkedRoomId).eq("user_id",user.id).maybeSingle();
+ if(error){console.warn("Room membership check failed:",error.message);return}
+ if(roomId!==checkedRoomId)return;
+ if(!data){
+   if(presenceChannel){await sb.removeChannel(presenceChannel);presenceChannel=null}
+   if(dbChannel){await sb.removeChannel(dbChannel);dbChannel=null}
+   if(adminRequestPoll)clearInterval(adminRequestPoll);adminRequestPoll=null;
+   if(membershipPoll)clearInterval(membershipPoll);membershipPoll=null;
+   resetToJoin();
+   alert("This room has been closed or your membership was removed.");
+ }
+}
+async function refreshAdminRequests(){
+ if(!roomId||!isRoomAdmin)return;
+ const {data,error}=await sb.from("chat_join_requests").select("id,username,created_at").eq("room_id",roomId).eq("status","pending").order("created_at",{ascending:true});
+ if(error){console.warn("Could not load join requests:",error.message);return}
+ const list=$("admin-request-list");list.replaceChildren();
+ const currentIds=new Set((data||[]).map(r=>r.id));
+ const hasNew=(data||[]).some(r=>!seenAdminRequests.has(r.id));
+ seenAdminRequests=currentIds;
+ for(const req of (data||[])){
+   const row=document.createElement("div");row.className="call-option";row.style.justifyContent="space-between";
+   const name=document.createElement("span");name.textContent=req.username+" wants to join";
+   const actions=document.createElement("span");actions.style.display="flex";actions.style.gap="6px";
+   for(const [label,approve] of [["Approve",true],["Reject",false]]){
+     const b=document.createElement("button");b.type="button";b.className="btn"+(approve?"":" secondary");b.textContent=label;b.style.padding="6px 9px";
+     b.addEventListener("click",async()=>{b.disabled=true;const result=await sb.rpc("decide_chat_join",{p_request_id:req.id,p_approve:approve});if(result.error){alert("Could not update request: "+result.error.message);b.disabled=false;return}await refreshAdminRequests()});
+     actions.append(b);
+   }
+   row.append(name,actions);list.append(row);
+ }
+ if(hasNew)$("admin-requests").classList.remove("hidden");
+ if(!data?.length)$("admin-requests").classList.add("hidden");
+}
+
 $("join-form").addEventListener("submit",async e=>{
  e.preventDefault();err("");const name=$("username").value.trim(),code=$("code").value.trim().toUpperCase();
  if(name.length<2||name.length>24){err("Username must be 2–24 characters.");return}
  if(!/^[A-Z0-9_-]{4,24}$/.test(code)){err("Room code must be 4–24 letters, numbers, _ or -.");return}
  $("join-btn").disabled=true;$("join-btn").textContent="CONNECTING…";
- try{await auth();roomId=await roomJoin(code,name);myName=name;roomCode=code;
- $("room-display").textContent=code;$("title").textContent=code;$("join").classList.add("hidden");$("chat").classList.remove("hidden");
- await history();await watchMessages();await watchPresence();status("Live");
- }catch(e){console.error(e);err("Could not join room: "+(e.message||e)+"\nCheck SQL setup, RPC functions, RLS and Anonymous Sign-Ins.");}
+ try{
+   await auth();
+   const result=await roomJoin(code,name);
+   if(result.requested){await waitForApproval(result.requestId,code,name);return}
+   await enterRoom(result.roomId,code,name);
+ }catch(e){console.error(e);err("Could not join room: "+(e.message||e)+"\\nCheck migration, RLS and Anonymous Sign-Ins.");}
  finally{$("join-btn").disabled=false;$("join-btn").textContent="JOIN / CREATE ROOM"}
 });
+$("cancel-join-request").addEventListener("click",()=>{
+ if(joinRequestPoll)clearInterval(joinRequestPoll);joinRequestPoll=null;pendingRequestId=null;
+ $("join-request-modal").classList.add("hidden");
+});
+$("close-admin-requests").addEventListener("click",()=>$("admin-requests").classList.add("hidden"));
+
 async function history(){
  const {data,error}=await sb.from("chat_messages").select("id,room_id,user_id,username,content,created_at").eq("room_id",roomId).order("created_at",{ascending:true}).limit(300);
  if(error)throw error;$("messages").replaceChildren();seen.clear();(data||[]).forEach(render);empty();
@@ -242,7 +338,7 @@ async function handleCallSignal(m){if(!m||m.roomId!==roomId||m.to!==sessionId)re
 }
 $("call-accept").addEventListener("click",async()=>{if(!incomingInvite)return;const invite=incomingInvite;incomingInvite=null;$("incoming-call").classList.add("hidden");activeCall={id:invite.id,mode:invite.mode,initiator:false,targets:new Set([invite.from]),accepted:new Set(),startedAt:Date.now()};callMode=invite.mode;$("call-title").textContent=(callMode==="video"?"Video":"Audio")+" call · "+invite.name;$("call-stage").classList.remove("hidden");$("call-status").textContent="Connecting…";try{await getLocalMedia(callMode);await sendCallSignal({type:"accept",to:invite.from,callId:invite.id})}catch(e){alert("Microphone/camera permission failed: "+e.message);await sendCallSignal({type:"decline",to:invite.from,callId:invite.id}).catch(()=>{});await endCall(false)}});
 $("call-decline").addEventListener("click",async()=>{if(incomingInvite){await sendCallSignal({type:"decline",to:incomingInvite.from,callId:incomingInvite.id}).catch(console.warn);incomingInvite=null}$("incoming-call").classList.add("hidden")});
-$("picker-cancel").addEventListener("click",()=>$ ("call-picker").classList.add("hidden"));
+$("picker-cancel").addEventListener("click",()=>$("call-picker").classList.add("hidden"));
 $("picker-start").addEventListener("click",()=>{const list=$("call-list"),all=list.querySelector("#call-everyone");let ids;if(all?.checked)ids=onlineOthers();else{const selected=new Set([...list.querySelectorAll(".call-person:checked")].map(x=>x.value));ids=onlineOthers().filter(p=>selected.has(p.session_id))}if(!ids.length){alert("Select at least one room member.");return}startOutgoingCall(callMode,ids)});
 $("audio-call").addEventListener("click",()=>showPicker("audio"));$("video-call").addEventListener("click",()=>showPicker("video"));
 $("toggle-camera").addEventListener("click",()=>{if(!localStream)return;const tracks=localStream.getVideoTracks();if(!tracks.length){alert("This is an audio call. Start a video call to use the camera.");return}const enabled=!tracks[0].enabled;tracks.forEach(t=>t.enabled=enabled);$("toggle-camera").textContent=enabled?"Camera off":"Camera on"});
@@ -262,11 +358,48 @@ async function endCall(notify=true){
 }
 $("hangup").addEventListener("click",()=>endCall(true));
 
-async function leave(){
- if(activeCall)await endCall(true);
- if(presenceChannel){await sb.removeChannel(presenceChannel);presenceChannel=null}if(dbChannel){await sb.removeChannel(dbChannel);dbChannel=null}
- roomId=null;myName="";roomCode="";seen.clear();$("messages").replaceChildren();$("members").replaceChildren();$("chat").classList.add("hidden");$("join").classList.remove("hidden");status("Disconnected");
+async function removeRoomFiles(){
+ const bucket=sb.storage.from("Chat-Uploads"),paths=[];
+ async function walk(prefix){
+   const {data,error}=await bucket.list(prefix,{limit:1000});
+   if(error)throw error;
+   for(const item of (data||[])){
+     if(!item.name)continue;
+     const full=prefix+"/"+item.name;
+     if(item.id)paths.push(full);else await walk(full);
+   }
+ }
+ await walk(roomId);
+ for(let i=0;i<paths.length;i+=100){
+   const {error}=await bucket.remove(paths.slice(i,i+100));
+   if(error)throw error;
+ }
 }
+async function leave(){
+ if(!roomId){resetToJoin();return}
+ const leavingRoomId=roomId,wasAdmin=isRoomAdmin;
+ if(wasAdmin&&!confirm("As room admin, leaving will close this room and delete its messages, join requests and uploaded files for everyone. Continue?"))return;
+ if(activeCall)await endCall(true);
+ try{
+   if(wasAdmin){status("Removing room files…");await removeRoomFiles();}
+   const {error}=await sb.rpc("leave_chat_room",{p_room_id:leavingRoomId});
+   if(error)throw error;
+ }catch(e){
+   console.error(e);alert("Room cleanup could not finish: "+e.message+"\\nTry again while online.");return;
+ }
+ if(presenceChannel){await sb.removeChannel(presenceChannel);presenceChannel=null}
+ if(dbChannel){await sb.removeChannel(dbChannel);dbChannel=null}
+ if(adminRequestPoll)clearInterval(adminRequestPoll);adminRequestPoll=null;
+ resetToJoin();
+}
+function resetToJoin(){
+ roomId=null;myName="";roomCode="";isRoomAdmin=false;seen.clear();
+ if(joinRequestPoll)clearInterval(joinRequestPoll);joinRequestPoll=null;pendingRequestId=null;
+ if(membershipPoll)clearInterval(membershipPoll);membershipPoll=null;
+ $("messages").replaceChildren();$("members").replaceChildren();
+ $("chat").classList.add("hidden");$("join").classList.remove("hidden");status("Disconnected");
+}
+
 $("leave").addEventListener("click",leave);
 window.addEventListener("beforeunload",()=>{if(presenceChannel)sb.removeChannel(presenceChannel);if(dbChannel)sb.removeChannel(dbChannel)});
 </script></body></html>
