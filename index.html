@@ -112,6 +112,43 @@ body:before,body:after{display:none!important;}
 /* Message reactions and voice notes */
 .msg{position:relative;cursor:pointer}.reaction-picker{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;padding:6px;background:#111;border:1px solid #333;border-radius:12px;width:max-content;max-width:100%}.reaction-picker button{border:0;background:#222;color:#fff;border-radius:8px;padding:5px 7px;font-size:18px;line-height:1}.reaction-picker button:hover{background:#333;transform:scale(1.12)}.reaction-summary{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.reaction-chip{border:1px solid #333;background:#111;color:#eee;border-radius:999px;padding:3px 8px;font-size:12px}.reaction-chip.mine{border-color:#7f8df7;background:#1c2340}.voice-note{display:flex;align-items:center;gap:8px;min-width:min(280px,70vw);padding:8px;border:1px solid #333;border-radius:10px;background:#090909}.voice-note audio{width:100%;max-width:300px;height:34px}.voice-label{font-size:11px;color:#aaa}.voice-recording{background:#47121b!important;color:#ff9eaa!important;border-color:#a6384a!important;animation:voicePulse 1s infinite alternate}@keyframes voicePulse{to{box-shadow:0 0 0 4px #ff426022}}#voice-record{min-width:42px}.reaction-picker button:focus-visible,.reaction-chip:focus-visible{outline:2px solid #8b9cff;outline-offset:2px}
 
+
+
+/* Mobile compact polish + admin member controls */
+.member-row{display:flex;align-items:center;gap:6px;min-width:0}
+.member-name{flex:1;min-width:0;overflow-wrap:anywhere}
+.kick-user{flex:0 0 auto;padding:4px 7px;border:1px solid #7a3346;border-radius:7px;background:#301521;color:#ff9ab0;font-size:10px;cursor:pointer}
+.kick-user:hover{background:#4a1b2b}
+.kick-user:disabled{opacity:.55;cursor:wait}
+html,body{width:100%;overflow-x:hidden}
+.messages{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.msg{max-width:min(92%,720px);word-break:break-word}
+.body img{max-width:100%;height:auto}
+.voice-note{width:100%;min-width:0;max-width:100%;flex-wrap:wrap}
+.voice-note audio{width:100%;min-width:0;max-width:300px}
+@media(max-width:680px){
+ .side{padding:8px;gap:6px}
+ .side .logo{font-size:12px}
+ .room{padding:6px 9px}
+ .roomcode{font-size:16px}
+ .members{gap:4px;max-height:68px;overflow:auto}
+ .member-row{gap:4px;padding:4px 5px}
+ .kick-user{padding:3px 5px;font-size:9px}
+ .leave{padding:7px 9px;font-size:12px}
+ .top{gap:6px;padding:10px}
+ .callbtn{padding:6px 7px;font-size:11px}
+ .messages{padding:10px 8px;gap:9px}
+ .msg{max-width:94%;padding:9px 10px}
+ .composer{gap:5px;padding:7px;padding-bottom:max(7px,env(safe-area-inset-bottom))}
+ .composer .icon{min-width:38px;min-height:44px;padding:6px}
+ .composer input#message{width:0;flex:1 1 0;min-width:0;font-size:16px;padding:10px}
+ .foot{padding:4px 9px 8px}
+}
+@media(max-width:380px){
+ .composer{gap:4px;padding-inline:5px}
+ .composer .icon{min-width:33px;padding:4px}
+ .callbtn{font-size:10px;padding:6px}
+}
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
@@ -331,7 +368,33 @@ async function watchMessages(){
 async function watchPresence(){
  if(presenceChannel)await sb.removeChannel(presenceChannel);
  presenceChannel=sb.channel("room:"+roomId,{config:{private:true,presence:{key:sessionId},broadcast:{ack:true}}});
- const update=()=>{const unique=new Map();roomSessions=Object.values(presenceChannel.presenceState()).flat().filter(p=>p?.user_id&&p?.session_id);roomSessions.forEach(p=>unique.set(p.session_id,p));$("members").replaceChildren();[...unique.values()].sort((a,b)=>(a.username||"").localeCompare(b.username||"")).forEach(p=>{const d=document.createElement("div");d.className="member";d.textContent=(p.username||"user")+(p.session_id===sessionId?" (you)":"");$("members").append(d)});$("online").textContent=unique.size+" online"};
+ const update=()=>{
+  const unique=new Map();
+  roomSessions=Object.values(presenceChannel.presenceState()).flat().filter(p=>p?.user_id&&p?.session_id);
+  roomSessions.forEach(p=>unique.set(p.session_id,p));
+  $("members").replaceChildren();
+  [...unique.values()].sort((a,b)=>(a.username||"").localeCompare(b.username||"")).forEach(p=>{
+   const row=document.createElement("div");row.className="member member-row";
+   const name=document.createElement("span");name.className="member-name";
+   name.textContent=(p.username||"user")+(p.session_id===sessionId?" (you)":"")+(p.user_id===user.id&&isRoomAdmin?" · ADMIN":"");
+   row.append(name);
+   if(isRoomAdmin&&p.user_id!==user.id){
+    const kick=document.createElement("button");kick.type="button";kick.className="kick-user";kick.textContent="Remove";
+    kick.addEventListener("click",async()=>{
+     if(!confirm("Remove "+(p.username||"this user")+" from this room? They will lose room access."))return;
+     kick.disabled=true;
+     const {error}=await sb.rpc("admin_remove_chat_member",{p_room_id:roomId,p_user_id:p.user_id});
+     if(error){alert("Could not remove user: "+error.message);kick.disabled=false;return}
+     status("Member removed");
+     // Membership polling on every device will disconnect all sessions of this user.
+     setTimeout(()=>{if(roomId)checkRoomMembership()},600);
+    });
+    row.append(kick);
+   }
+   $("members").append(row);
+  });
+  $("online").textContent=unique.size+" online";
+ };
  presenceChannel.on("presence",{event:"sync"},update).on("presence",{event:"join"},update).on("presence",{event:"leave"},update)
  .on("broadcast",{event:"room-cleared"},()=>{$("messages").replaceChildren();seen.clear();empty();status("Room cleared by a member")})
  .on("broadcast",{event:"call-signal"},({payload})=>handleCallSignal(payload));
