@@ -149,6 +149,41 @@ html,body{width:100%;overflow-x:hidden}
  .composer .icon{min-width:33px;padding:4px}
  .callbtn{font-size:10px;padding:6px}
 }
+
+/* CR3CKA CHAT — PURE BLACK / NEON CYAN THEME */
+:root{color-scheme:dark;--bg:#000;--p:#050505;--line:#242424;--g:#00f5ff;--t:#f2f5f7;--m:#858d98;--r:#ff4057;--accent2:#00f5ff;--glow:#00f5ff20}
+html,body{background:#000!important;color:#f2f5f7!important}
+body{background-image:none!important;letter-spacing:.01em}
+body:before,body:after{display:none!important}
+#join{background:#000!important}
+.card{background:#080808!important;border:1px solid #292929!important;box-shadow:0 0 32px #00f5ff08!important}
+.logo,.roomcode{color:#00f5ff!important;text-shadow:0 0 12px #00f5ff20!important}
+.sub,.hint,.label,.online,.muted,.foot,.empty,.voice-label{color:#858d98!important}
+label{color:#aab1b8!important}
+input,textarea,select{background:#030303!important;color:#f2f5f7!important;border-color:#292929!important}
+input:focus,textarea:focus,select:focus{border-color:#00f5ff!important;box-shadow:0 0 0 2px #00f5ff12!important;outline:none!important}
+.primary{background:#00e5ef!important;color:#000!important;border:1px solid #00f5ff!important;font-weight:800!important}
+.btn:not(.primary),.icon,.callbtn{background:#0a0a0a!important;color:#00f5ff!important;border:1px solid #303030!important}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #00f5ff!important;outline-offset:3px}
+#chat,.main{background:#000!important}
+.side{background:#030303!important;border-color:#242424!important}
+.room{background:#080808!important;border-color:#292929!important}
+.top{background:#030303!important;border-color:#242424!important}
+.messages{background:#050505!important}
+.msg{background:#0a0a0a!important;color:#f2f5f7!important;border-color:#242424!important}
+.msg.mine{background:#061113!important;border-color:#07565a!important}
+.member:before{color:#00f5ff!important}
+.leave{background:#100609!important;color:#ff687b!important;border-color:#51212a!important}
+.leave:hover{background:#1c080d!important}
+.composer{background:#030303!important;border-color:#242424!important}
+.voice-note{background:#090909!important;border-color:#292929!important}
+.reaction-chip{background:#0b0b0b!important;border-color:#303030!important;color:#eee!important}
+.reaction-chip.mine{border-color:#007f86!important;background:#062326!important}
+#theme-toggle{background:#080808!important;color:#00f5ff!important;border-color:#333!important}
+.modalback{background:#000c!important}
+.modal{background:#080808!important;border-color:#303030!important;color:#f2f5f7!important}
+@media(max-width:600px){.card{background:#080808!important}}
+
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
