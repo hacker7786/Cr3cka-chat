@@ -90,6 +90,24 @@ body.theme-light .video-tile{background:linear-gradient(145deg,#fff,#edf1fb);bor
 body.theme-light .hangup{background:#ffedf0;color:#b92e50;border-color:#edb8c4}
 @media(max-width:680px){#theme-toggle{top:8px;right:8px;padding:7px 10px;font-size:11px}.top{padding-right:10px;padding-top:48px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* Requested UI fix: pure-black dark theme and compact centered theme switch */
+:root{--bg:#000;--p:#050505;--line:#252525;}
+html,body{background:#000!important;}
+body{background-image:none!important;background-color:#000!important;}
+body:before,body:after{display:none!important;}
+#chat{background:#000!important;border-color:#202020!important;}
+.side,.top,.composer,.foot{background:#050505!important;}
+.room,.msg,.msg.mine,.call-option{background:#080808!important;border-color:#292929!important;}
+#call-stage{background:#000!important;backdrop-filter:none!important;}
+.video-tile{background:#000!important;border-color:#292929!important;box-shadow:none!important;}
+#theme-toggle{position:fixed;left:50%;right:auto;top:8px;transform:translateX(-50%);z-index:120;padding:5px 8px;font-size:10px;line-height:1.2;min-height:25px;white-space:nowrap;box-shadow:0 3px 12px #0008;background:#101010ed;border-color:#444;color:#eee;}
+#theme-toggle .theme-icon{margin-right:3px;}
+#theme-toggle:hover:not(:disabled){transform:translateX(-50%);}
+#theme-toggle:active:not(:disabled){transform:translateX(-50%) scale(.98);}
+.top{padding-right:12px!important;}
+@media(max-width:680px){#theme-toggle{top:6px;padding:4px 7px;font-size:9px;min-height:22px}.top{padding-top:10px!important}}
+
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
