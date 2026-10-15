@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050907"><title>Cr3cka Chat</title>
+<meta name="theme-color" content="#080b14"><title>Cr3cka Chat</title>
 <style>
 :root{color-scheme:dark;--bg:#050907;--p:#09130d;--line:#1c3c29;--g:#42ff88;--t:#e0f8e8;--m:#85a891;--r:#ff6579}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10291a,#050907 58%);color:var(--t);font:14px/1.5 ui-monospace,monospace;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
@@ -26,7 +26,72 @@ button,input{font:inherit}button{transition:transform .18s ease,border-color .18
 @media(max-width:680px){#chat{border:0}.side{background:#101729f2;border-bottom:1px solid #29344b}.room{border-radius:11px}.members{gap:4px}.member{background:#ffffff05}.top{background:#101729f2}.messages{padding:14px 11px}.composer{padding:10px}.card{border-radius:20px}.callbtn{font-size:11px}#call-stage{padding:10px}#call-head{gap:7px}#videos{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px}.video-tile{min-height:130px}.video-tile video{max-height:calc(100dvh - 190px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}body:before,body:after{display:none}}
 
+
+/* Aurora polish + accessible light/dark theme switch */
+:root{--bg:#080b14;--p:#11172a;--line:#303c5c;--g:#a7b1ff;--t:#f5f6ff;--m:#a7b1d0;--r:#ff718d;--accent2:#63efd8;--glow:#8b5cf638}
+body{background-color:var(--bg);background-image:radial-gradient(ellipse at 10% 0%,#483078 0,transparent 38%),radial-gradient(ellipse at 95% 15%,#075e65 0,transparent 34%),radial-gradient(ellipse at 55% 100%,#2c1e54 0,transparent 45%),linear-gradient(135deg,#080b14,#0d1325 52%,#080b14);background-attachment:fixed}
+body:before{background:#b05cff;opacity:.16}body:after{background:#34f0d0;opacity:.13}
+#theme-toggle{position:fixed;right:16px;top:12px;z-index:120;border:1px solid #a7b1ff70;border-radius:999px;padding:9px 13px;background:#121a30eF;color:#e9ecff;box-shadow:0 8px 30px #0003;backdrop-filter:blur(14px);font-size:12px;font-weight:750}
+#theme-toggle .theme-icon{margin-right:6px}
+#join{background:radial-gradient(ellipse at 50% 45%,#111a2b30,transparent 65%)}
+.card{background:linear-gradient(145deg,#1b2340eF,#101626f5);border-color:#9aa7ff45;box-shadow:0 30px 100px #0008,0 0 70px #8b5cf61c}
+.logo{background:linear-gradient(90deg,#d9c7ff,#a8b4ff 45%,#69f3db);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:none}
+.top{padding-right:155px;background:linear-gradient(90deg,#11182bee,#0b1325e8);border-color:#34415d}
+.messages{background:linear-gradient(180deg,#0a1020a8,#0b1020c9)}
+.msg{background:linear-gradient(145deg,#151f37,#10182b);border-color:#354568;box-shadow:0 8px 24px #00015;border-radius:4px 17px 17px 17px}
+.msg.mine{background:linear-gradient(135deg,#24264b,#143b43);border-color:#5662a0;border-radius:17px 4px 17px 17px}
+.msg.mine .head strong{color:#b8c2ff}
+.composer{background:#0c1324ed;border-color:#303c5c}
+.icon{background:linear-gradient(145deg,#18223b,#10192c);border-color:#39486c;color:#c0c8ff}
+.send,.callbtn.video{background:linear-gradient(115deg,#b7bfff,#71f0d7);color:#101526;border:0}
+.callbtn{background:#151f37;border-color:#53618c;color:#c3cbff}
+.side{background:linear-gradient(180deg,#151c32f5,#0b1120f5)}
+.room{background:linear-gradient(145deg,#1d2948,#10182b);border-color:#3c4b70}
+.roomcode{color:#bdc4ff}
+.modal{background:linear-gradient(145deg,#1a2340f7,#0d1425f7);border-color:#6879bd;box-shadow:0 30px 100px #0009,0 0 50px #8b9cff15}
+.modal h2{color:#c0c7ff}
+.call-option{background:#121c31;border-color:#334260}
+#call-stage{background:radial-gradient(ellipse at 50% 0%,#1c2342,#080b14 70%);backdrop-filter:blur(20px)}
+.video-tile{background:linear-gradient(145deg,#151e34,#080d18);border-color:#354668}
+
+body.theme-light{color-scheme:light;--bg:#f5f7ff;--p:#ffffff;--line:#d8def0;--g:#5547c8;--t:#202642;--m:#68718c;--r:#c93254;--accent2:#008f91;--glow:#7a6ce522;background-image:radial-gradient(ellipse at 8% 0%,#dcd5ff 0,transparent 42%),radial-gradient(ellipse at 95% 15%,#c7f7ef 0,transparent 37%),radial-gradient(ellipse at 50% 100%,#fce4f1 0,transparent 44%),linear-gradient(135deg,#f7f8ff,#eef3ff 55%,#fff8fc);background-color:#f5f7ff}
+body.theme-light:before{background:#a68bff;opacity:.13}body.theme-light:after{background:#62d9c5;opacity:.16}
+body.theme-light #theme-toggle{background:#ffffffdf;color:#30285e;border-color:#c6c9ec;box-shadow:0 8px 25px #48508017}
+body.theme-light .card{background:#ffffffdc;border-color:#d9d8f4;box-shadow:0 25px 75px #525b8b20,0 0 40px #a8a0ef22}
+body.theme-light .logo{background:linear-gradient(90deg,#5547c8,#7c5bc7 48%,#008f91);background-clip:text;-webkit-background-clip:text;color:transparent}
+body.theme-light .sub,body.theme-light .hint,body.theme-light label{color:#68718c}
+body.theme-light input{background:#fff;color:#202642;border-color:#d5daed}
+body.theme-light .btn{background:#eeedff;color:#4439a4;border-color:#c9c5f2}
+body.theme-light .primary{background:linear-gradient(110deg,#6656d9,#45cbb8);color:#fff;border:0}
+body.theme-light #chat{background:#ffffff9c;border-color:#e0e4f3}
+body.theme-light .side{background:#ffffffd9;border-color:#e0e4f3}
+body.theme-light .room{background:linear-gradient(145deg,#f0efff,#e9fbf8);border-color:#d4d5f2;box-shadow:inset 0 1px #fff}
+body.theme-light .roomcode{color:#5144bc;text-shadow:none}
+body.theme-light .online{color:#168477}
+body.theme-light .member{color:#454d69}
+body.theme-light .member:hover{background:#6a60c20d}
+body.theme-light .leave{background:#fff0f3;border-color:#f0c5d0;color:#b92e50}
+body.theme-light .top{background:#ffffffdf;border-color:#e0e4f3}
+body.theme-light .messages{background:#f7f8ffb8}
+body.theme-light .empty{color:#7b83a0}
+body.theme-light .msg{background:linear-gradient(145deg,#fff,#f3f5ff);border-color:#e0e3f4;box-shadow:0 7px 20px #4c57820b;color:#202642}
+body.theme-light .msg.mine{background:linear-gradient(135deg,#eeebff,#e3faf5);border-color:#d1d0f3;color:#202642}
+body.theme-light .head{color:#717a96}body.theme-light .head strong{color:#5547c8}body.theme-light .msg.mine .head strong{color:#5547c8}
+body.theme-light .composer,body.theme-light .foot{background:#ffffffdf;border-color:#e0e4f3;color:#77809b}
+body.theme-light .icon{background:#fff;color:#5547c8;border-color:#d9def0}
+body.theme-light .send,body.theme-light .callbtn.video{background:linear-gradient(115deg,#6656d9,#45cbb8);color:white}
+body.theme-light .callbtn{background:#f0efff;border-color:#d4d0f4;color:#5144bc}
+body.theme-light .modal{background:linear-gradient(145deg,#fff,#f3f5ff);border-color:#d1d5f1;box-shadow:0 30px 90px #46508025}
+body.theme-light .modal h2{color:#5144bc}body.theme-light .modal p{color:#68718c}
+body.theme-light .call-option{background:#f8f9ff;border-color:#dce1f2}
+body.theme-light .btn.secondary{background:#f3f5fb;color:#39415d;border-color:#dce1ef}
+body.theme-light #call-stage{background:radial-gradient(ellipse at 50% 0%,#e4e3ff,#f5f7ff 70%)}
+body.theme-light .video-tile{background:linear-gradient(145deg,#fff,#edf1fb);border-color:#d8def0;color:#68718c}
+body.theme-light .hangup{background:#ffedf0;color:#b92e50;border-color:#edb8c4}
+@media(max-width:680px){#theme-toggle{top:8px;right:8px;padding:7px 10px;font-size:11px}.top{padding-right:10px;padding-top:48px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style></head><body>
+<button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
 <form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Alice" autocomplete="nickname" required>
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="ABC123" autocomplete="off" required>
@@ -46,6 +111,13 @@ const SUPABASE_URL = "https://zjbgdscramuegulcjsxn.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yPU4CGs6939Ab-_u78Rkrw_5p4goedT";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const $ = id => document.getElementById(id);
+// Theme toggle is independent of chat state and remembers the user's preference.
+(function initTheme(){
+ const saved=(()=>{try{return localStorage.getItem("cr3cka-theme")}catch{return null}})();
+ if(saved==="light")document.body.classList.add("theme-light");
+ function update(){const light=document.body.classList.contains("theme-light");$("theme-label").textContent=light?"Dark mode":"Light mode";$("theme-toggle").querySelector(".theme-icon").textContent=light?"🌙":"☀️";$("theme-toggle").setAttribute("aria-label",light?"Switch to dark theme":"Switch to light theme");document.querySelector('meta[name="theme-color"]')?.setAttribute("content",light?"#f5f7ff":"#080b14")}
+ $("theme-toggle").addEventListener("click",()=>{document.body.classList.toggle("theme-light");try{localStorage.setItem("cr3cka-theme",document.body.classList.contains("theme-light")?"light":"dark")}catch{}update()});update();
+})();
 let user=null, roomId=null, myName="", roomCode="", presenceChannel=null, dbChannel=null;
 const sessionId=crypto.randomUUID();
 let roomSessions=[], callMode="audio", activeCall=null, localStream=null, incomingInvite=null, callPeers=new Map(), remoteStreams=new Map(), pendingIce=new Map();
