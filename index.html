@@ -186,9 +186,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
-<section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
-<form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Alice" autocomplete="nickname" required>
-<label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="ABC123" autocomplete="off" required>
+<section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Full Privacy ]</div>
+<form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter your Username" autocomplete="nickname" required>
+<label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
 <div class="hint">Enter any 4 or 8 digit random code and share this code with her friend's. Use the same room code on each device. Cr3cka does provide end-to-end encryption.</div></div></section>
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
