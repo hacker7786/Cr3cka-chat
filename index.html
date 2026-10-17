@@ -372,9 +372,9 @@ function render(m){
    const actions=document.createElement("div");actions.className="file-actions";
    const view=document.createElement("button");view.type="button";view.className="file-action";view.textContent="View";
    const download=document.createElement("button");download.type="button";download.className="file-action";download.textContent="Download";actions.append(view,download);b.append(actions);
-   view.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600);if(error||!data?.signedUrl){alert("Could not open file: "+(error?.message||"URL unavailable"));return}window.open(data.signedUrl,"_blank","noopener,noreferrer")});
-   download.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600,{download:true});if(error||!data?.signedUrl){alert("Could not download file: "+(error?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=data.signedUrl;link.download=filePath.split("/").pop()||"cr3cka-file";document.body.append(link);link.click();link.remove()});
-   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"});
+   view.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600);if(error||!data?.signedUrl){alert("Could not open file: "+(error?.message||"URL unavailable"));return}window.open(data.signedUrl,"_blank","noopener,noreferrer")});
+   download.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600,{download:true});if(error||!data?.signedUrl){alert("Could not download file: "+(error?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=data.signedUrl;link.download=filePath.split("/").pop()||"cr3cka-file";document.body.append(link);link.click();link.remove()});
+   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"});
  } else if(m.content.startsWith("cr3cka-file:")){
    const filePath=m.content.slice("cr3cka-file:".length);const fileName=filePath.split("/").pop()||"Shared file";const ext=fileName.split(".").pop().toLowerCase();
    const card=document.createElement("div");card.className="shared-file-card";card.style.cssText="display:flex;flex-direction:column;gap:9px;min-width:min(260px,70vw);max-width:100%;padding:12px;border:1px solid #285c50;border-radius:12px;background:#071411";
@@ -386,10 +386,10 @@ function render(m){
    const actions=document.createElement("div");actions.className="file-actions";
    const view=document.createElement("button");view.type="button";view.className="file-action";view.textContent="Open";
    const download=document.createElement("button");download.type="button";download.className="file-action";download.textContent="Download";actions.append(view,download);card.append(actions);b.append(card);
-   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl){preview.src=data.signedUrl;view.addEventListener("click",ev=>{ev.stopPropagation();window.open(data.signedUrl,"_blank","noopener,noreferrer")});download.addEventListener("click",async ev=>{ev.stopPropagation();const {data:d,error:de}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600,{download:true});if(de||!d?.signedUrl){alert("Could not download file: "+(de?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=d.signedUrl;link.download=fileName;document.body.append(link);link.click();link.remove()})}else{title.textContent="File unavailable: "+fileName;view.disabled=true;download.disabled=true}});
+   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl){preview.src=data.signedUrl;view.addEventListener("click",ev=>{ev.stopPropagation();window.open(data.signedUrl,"_blank","noopener,noreferrer")});download.addEventListener("click",async ev=>{ev.stopPropagation();const {data:d,error:de}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600,{download:true});if(de||!d?.signedUrl){alert("Could not download file: "+(de?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=d.signedUrl;link.download=fileName;document.body.append(link);link.click();link.remove()})}else{title.textContent="File unavailable: "+fileName;view.disabled=true;download.disabled=true}});
  } else if(m.content.startsWith("cr3cka-audio:")){
    const filePath=m.content.slice(13);const wrap=document.createElement("div");wrap.className="voice-note";const icon=document.createElement("span");icon.textContent="🎙️";const right=document.createElement("div");right.style.flex="1";const label=document.createElement("div");label.className="voice-label";label.textContent="Voice message";const audio=document.createElement("audio");audio.controls=true;audio.preload="metadata";right.append(label,audio);wrap.append(icon,right);b.append(wrap);
-   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)audio.src=data.signedUrl;else label.textContent="Voice message unavailable"});
+   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)audio.src=data.signedUrl;else label.textContent="Voice message unavailable"});
  } else b.textContent=m.content;
  a.append(b);
  const picker=document.createElement("div");picker.className="reaction-picker hidden";picker.setAttribute("aria-label","React to message");
@@ -480,12 +480,12 @@ $("file").addEventListener("change",async e=>{
    if(isShared && f.size > 6*1024*1024){
      await uploadLargeFileResumable(f,path);
    }else{
-     const {error}=await sb.storage.from("chat-uploads").upload(path,f,{contentType:f.type,cacheControl:"3600",upsert:false});
+     const {error}=await sb.storage.from("Chat-Uploads").upload(path,f,{contentType:f.type,cacheControl:"3600",upsert:false});
      if(error)throw error;
    }
    const prefix=isImage?"cr3cka-image:":"cr3cka-file:";
    const {error:messageError}=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:prefix+path});
-   if(messageError){await sb.storage.from("chat-uploads").remove([path]);throw messageError}
+   if(messageError){await sb.storage.from("Chat-Uploads").remove([path]);throw messageError}
    status("File sent successfully");
  }catch(e){console.error("File upload error:",e);status("Upload failed");alert("File upload failed: "+(e.message||e)+"\nCheck connection, bucket MIME types and Storage INSERT policy.")}
 });
@@ -509,7 +509,7 @@ function uploadLargeFileResumable(file,path){
        uploadDataDuringCreation:true,
        removeFingerprintOnSuccess:true,
        headers:{authorization:`Bearer ${session.access_token}`,apikey:SUPABASE_PUBLISHABLE_KEY},
-       metadata:{bucketName:"chat-uploads",objectName:path,contentType:file.type,cacheControl:"3600"},
+       metadata:{bucketName:"Chat-Uploads",objectName:path,contentType:file.type,cacheControl:"3600"},
        onError(error){reject(error)},
        onProgress(bytesUploaded,bytesTotal){
          const percent=Math.min(100,Math.round(bytesUploaded/bytesTotal*100));
@@ -544,9 +544,9 @@ async function stopAndSendVoice(){
  if(blob.size>MAX_VOICE){alert("Voice message is over 10 MB. Please record a shorter message.");status("Voice message too large");return}
  const ext=blob.type.includes("ogg")?"ogg":blob.type.includes("mp4")?"m4a":"webm";const path=roomId+"/voice-"+crypto.randomUUID()+"."+ext;
  const button=$("voice-record");button.disabled=true;status("Uploading voice message…");
- try{let r=await sb.storage.from("chat-uploads").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:false});if(r.error)throw r.error;
-   r=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:"cr3cka-audio:"+path});if(r.error){await sb.storage.from("chat-uploads").remove([path]);throw r.error}status("Voice message sent")
- }catch(e){console.error(e);alert("Voice message upload failed: "+e.message+"\nCheck chat-uploads bucket allowed MIME types include audio/webm, audio/ogg and audio/mp4.");status("Voice upload failed")}
+ try{let r=await sb.storage.from("Chat-Uploads").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:false});if(r.error)throw r.error;
+   r=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:"cr3cka-audio:"+path});if(r.error){await sb.storage.from("Chat-Uploads").remove([path]);throw r.error}status("Voice message sent")
+ }catch(e){console.error(e);alert("Voice message upload failed: "+e.message+"\nCheck Chat-Uploads bucket allowed MIME types include audio/webm, audio/ogg and audio/mp4.");status("Voice upload failed")}
  finally{button.disabled=false}
 }
 $("voice-record").addEventListener("click",async()=>{
@@ -562,7 +562,7 @@ $("clear-room").addEventListener("click",async()=>{
  const button=$("clear-room");button.disabled=true;status("Clearing room…");
  try{
    // Remove objects through the Storage API (not direct SQL against storage.objects).
-   const bucket=sb.storage.from("chat-uploads");
+   const bucket=sb.storage.from("Chat-Uploads");
    const {data:files,error:listError}=await bucket.list(roomId,{limit:1000});
    if(listError) throw listError;
    const paths=(files||[]).filter(f=>f.name && f.id).map(f=>roomId+"/"+f.name);
@@ -658,7 +658,7 @@ async function endCall(notify=true){
 $("hangup").addEventListener("click",()=>endCall(true));
 
 async function removeRoomFiles(){
- const bucket=sb.storage.from("chat-uploads"),paths=[];
+ const bucket=sb.storage.from("Chat-Uploads"),paths=[];
  async function walk(prefix){
    const {data,error}=await bucket.list(prefix,{limit:1000});
    if(error)throw error;
