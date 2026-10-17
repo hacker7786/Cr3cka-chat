@@ -184,13 +184,25 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .modal{background:#080808!important;border-color:#303030!important;color:#f2f5f7!important}
 @media(max-width:600px){.card{background:#080808!important}}
 
+
+/* Black neon audio-call participant cards */
+#call-stage.audio-call-mode #videos{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));align-content:center;gap:14px}
+.audio-person-card{position:relative;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:22px 14px;background:linear-gradient(145deg,#090909,#020202);border:1px solid #123b3e;border-radius:16px;box-shadow:inset 0 0 24px #00f5ff08,0 0 18px #00f5ff08;overflow:hidden}
+.audio-person-card:before{content:"";position:absolute;inset:0 18% auto;height:1px;background:linear-gradient(90deg,transparent,#00f5ff,transparent)}
+.audio-avatar{width:82px;height:82px;display:grid;place-items:center;border:1px solid #00f5ff;border-radius:50%;background:radial-gradient(circle at 35% 25%,#103236,#050909 72%);color:#00f5ff;font-size:27px;font-weight:800;text-shadow:0 0 16px #00f5ff66;box-shadow:0 0 0 5px #00f5ff09,0 0 28px #00f5ff15}
+.audio-person-name{max-width:100%;color:#f2f5f7;font-size:13px;font-weight:750;text-align:center;overflow-wrap:anywhere}
+.audio-person-status{display:flex;align-items:center;gap:6px;color:#00d6a0;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.audio-person-status:before{content:"";width:6px;height:6px;border-radius:50%;background:#00f5a0;box-shadow:0 0 9px #00f5a0}
+.audio-call-media{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;left:-10000px!important}
+@media(max-width:600px){#call-stage.audio-call-mode #videos{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:8px}.audio-person-card{min-height:165px;padding:16px 8px;gap:10px}.audio-avatar{width:64px;height:64px;font-size:22px}}
+
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
-<section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Full Privacy ]</div>
-<form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter your Username" autocomplete="nickname" required>
-<label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
+<section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ realtime room // Supabase backend ]</div>
+<form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Alice" autocomplete="nickname" required>
+<label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="ABC123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
-<div class="hint">Enter any 4 or 8 digit random code and share this code with her friend's. Use the same room code on each device. Cr3cka does provide end-to-end encryption.</div></div></section>
+<div class="hint">Use the same room code on each device. Keep the code private. This demo does not provide end-to-end encryption.</div></div></section>
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
 <div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden><button id="attach" class="icon" type="button" title="Attach image">＋</button><button id="voice-record" class="icon" type="button" title="Record voice message" aria-label="Record voice message">🎙</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Keep room codes private</div></main></section>
@@ -507,7 +519,47 @@ function sendCallSignal(payload){if(!presenceChannel)throw new Error("Room realt
 function showPicker(mode){callMode=mode;const people=onlineOthers();if(!people.length){alert("No other room members are online yet.");return}if(people.length===1){startOutgoingCall(mode,[people[0]]);return}const list=$("call-list");list.replaceChildren();const all=document.createElement("label");all.className="call-option";const allBox=document.createElement("input");allBox.type="checkbox";allBox.id="call-everyone";const allText=document.createElement("span");allText.textContent="Call Everyone ("+people.length+")";all.append(allBox,allText);list.append(all);people.forEach(p=>{const row=document.createElement("label");row.className="call-option";const box=document.createElement("input");box.type="checkbox";box.className="call-person";box.value=p.session_id;const name=document.createElement("span");name.textContent=p.username||"Room member";row.append(box,name);list.append(row)});allBox.addEventListener("change",()=>list.querySelectorAll(".call-person").forEach(x=>x.checked=allBox.checked));list.querySelectorAll(".call-person").forEach(x=>x.addEventListener("change",()=>{if(!x.checked)allBox.checked=false;else allBox.checked=[...list.querySelectorAll(".call-person")].every(y=>y.checked)}));$("call-picker").classList.remove("hidden")}
 async function startOutgoingCall(mode,targets){if(!targets.length)return;callMode=mode;activeCall={id:crypto.randomUUID(),mode,initiator:true,targets:new Set(targets.map(p=>p.session_id)),accepted:new Set(),startedAt:Date.now()};$("call-picker").classList.add("hidden");$("call-title").textContent=(mode==="video"?"Video":"Audio")+" call · "+(targets.length===1?(targets[0].username||"member"):targets.length+" invitees");$("call-stage").classList.remove("hidden");$("call-status").textContent="Calling…";try{await getLocalMedia(mode);for(const p of targets)await sendCallSignal({type:"invite",to:p.session_id,callId:activeCall.id,mode,callerName:myName});}catch(e){console.error(e);alert("Could not start call: "+e.message);await endCall(false)}}
 async function getLocalMedia(mode){if(localStream)return localStream;localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:mode==="video"});addVideoTile(sessionId,myName,localStream,true);return localStream}
-function addVideoTile(id,name,stream,isLocal=false){let tile=$("tile-"+id);if(!tile){tile=document.createElement("div");tile.className="video-tile";tile.id="tile-"+id;const v=document.createElement("video");v.autoplay=true;v.playsInline=true;if(isLocal)v.muted=true;v.srcObject=stream;v.play().catch(()=>{});const label=document.createElement("div");label.className="tile-name";label.textContent=name+(isLocal?" (you)":"");tile.append(v,label);$("videos").append(tile)}else{const v=tile.querySelector("video");if(v.srcObject!==stream)v.srcObject=stream;v.play().catch(()=>{})}}
+function callDisplayName(name){
+ const clean=String(name||"User").trim()||"User";
+ return clean.length<=6?clean:clean.charAt(0).toUpperCase();
+}
+function addVideoTile(id,name,stream,isLocal=false){
+ let tile=$("tile-"+id);
+ if(callMode==="audio"){
+  $("call-stage").classList.add("audio-call-mode");
+  if(!tile){
+   tile=document.createElement("div");tile.className="audio-person-card";tile.id="tile-"+id;
+   const avatar=document.createElement("div");avatar.className="audio-avatar";
+   avatar.textContent=(String(name||"U").trim().charAt(0)||"U").toUpperCase();
+   const label=document.createElement("div");label.className="audio-person-name";
+   label.textContent=callDisplayName(name)+(isLocal?" (you)":"");
+   const state=document.createElement("div");state.className="audio-person-status";
+   state.textContent=isLocal?"You · Audio":"Connected";
+   const audio=document.createElement("audio");audio.className="audio-call-media";audio.autoplay=true;audio.playsInline=true;
+   if(isLocal)audio.muted=true;
+   audio.srcObject=stream;audio.play().catch(()=>{});
+   tile.append(avatar,label,state,audio);$("videos").append(tile);
+  }else{
+   const audio=tile.querySelector("audio");
+   if(audio&&audio.srcObject!==stream)audio.srcObject=stream;
+   audio?.play().catch(()=>{});
+  }
+  return;
+ }
+ $("call-stage").classList.remove("audio-call-mode");
+ if(!tile){
+  tile=document.createElement("div");tile.className="video-tile";tile.id="tile-"+id;
+  const video=document.createElement("video");video.autoplay=true;video.playsInline=true;
+  if(isLocal)video.muted=true;
+  video.srcObject=stream;video.play().catch(()=>{});
+  const label=document.createElement("div");label.className="tile-name";label.textContent=name+(isLocal?" (you)":"");
+  tile.append(video,label);$("videos").append(tile);
+ }else{
+  const video=tile.querySelector("video");
+  if(video&&video.srcObject!==stream)video.srcObject=stream;
+  video?.play().catch(()=>{});
+ }
+}
 function removePeer(id){const pc=callPeers.get(id);if(pc){pc.onicecandidate=null;pc.ontrack=null;pc.close();callPeers.delete(id)}remoteStreams.delete(id);pendingIce.delete(id);$("tile-"+id)?.remove()}
 async function createPeer(id,name,makeOffer){if(callPeers.has(id))return callPeers.get(id);if(!localStream)await getLocalMedia(callMode);const pc=new RTCPeerConnection(RTC_CONFIG);callPeers.set(id,pc);localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));pc.onicecandidate=e=>{if(e.candidate)sendCallSignal({type:"ice",to:id,callId:activeCall?.id,candidate:e.candidate.toJSON()}).catch(console.warn)};pc.ontrack=e=>{let stream=remoteStreams.get(id);if(!stream){stream=e.streams[0]||new MediaStream();remoteStreams.set(id,stream);addVideoTile(id,name,stream)}if(!e.streams[0]&&!stream.getTracks().some(t=>t.id===e.track.id))stream.addTrack(e.track);$("call-status").textContent="Connected"};pc.onconnectionstatechange=()=>{if(["failed","closed","disconnected"].includes(pc.connectionState)&&pc.connectionState!=="disconnected")removePeer(id)};if(makeOffer){const offer=await pc.createOffer();await pc.setLocalDescription(offer);await sendCallSignal({type:"offer",to:id,callId:activeCall.id,description:pc.localDescription.toJSON()})}return pc}
 async function handleCallSignal(m){if(!m||m.roomId!==roomId||m.to!==sessionId)return;
@@ -536,7 +588,7 @@ async function endCall(notify=true){
  finally{
   if(localStream){for(const track of localStream.getTracks()){try{track.stop()}catch{}}localStream=null}
   $("tile-"+sessionId)?.remove();activeCall=null;incomingInvite=null;pendingIce.clear();callPeers.clear();remoteStreams.clear();
-  $("incoming-call").classList.add("hidden");$("call-picker").classList.add("hidden");$("call-stage").classList.add("hidden");$("videos").replaceChildren();$("call-status").textContent="Call ended";
+  $("incoming-call").classList.add("hidden");$("call-picker").classList.add("hidden");$("call-stage").classList.add("hidden");$("call-stage").classList.remove("audio-call-mode");$("videos").replaceChildren();$("call-status").textContent="Call ended";
   // The call UI is an overlay; hiding it returns the user to the existing chat dashboard.
   $("chat").classList.remove("hidden");
  }
