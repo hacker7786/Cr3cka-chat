@@ -90,6 +90,9 @@ body.theme-light .video-tile{background:linear-gradient(145deg,#fff,#edf1fb);bor
 body.theme-light .hangup{background:#ffedf0;color:#b92e50;border-color:#edb8c4}
 @media(max-width:680px){#theme-toggle{top:8px;right:8px;padding:7px 10px;font-size:11px}.top{padding-right:10px;padding-top:48px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+/* Screen share: red control, only shown during video calls */
+.screen-share-btn{border:1px solid #ff4057!important;background:#d91532!important;color:#fff!important;border-radius:9px;padding:9px 13px;font-weight:800;font-size:12px;box-shadow:0 0 18px #ff405720}.screen-share-btn:hover:not(:disabled){background:#f02442!important;box-shadow:0 0 22px #ff405740!important}.screen-share-btn[aria-pressed="true"]{background:#7b1020!important;border-color:#ff718d!important}.screen-share-btn:disabled{opacity:.6;cursor:wait}@media(max-width:600px){.screen-share-btn{padding:7px 9px;font-size:11px}}
+
 
 /* Requested UI fix: pure-black dark theme and compact centered theme switch */
 :root{--bg:#000;--p:#050505;--line:#252525;}
@@ -202,7 +205,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter a Username" autocomplete="nickname" required>
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
-<div class="hint">Enter any 4 or 8 digit code and create the room then share this code with you friends. Keep the code private. We provides end-to-end encryption.</div></div></section>
+<div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div></div></section>
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
 <div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime,application/pdf" hidden><button id="attach" class="icon" type="button" title="Attach image, video or PDF">＋</button><button id="voice-record" class="icon" type="button" title="Record voice message" aria-label="Record voice message">🎙</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Keep room codes private</div></main></section>
@@ -210,7 +213,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <div id="admin-requests" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="admin-requests-title"><div class="modal"><h2 id="admin-requests-title">Pending join requests</h2><p>Approve only people you want to let into this room.</p><div id="admin-request-list" class="call-list"></div><div class="modal-actions"><button id="close-admin-requests" class="btn secondary" type="button">Close</button></div></div></div>
 <div id="call-picker" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="picker-title"><div class="modal"><h2 id="picker-title">Start a call</h2><p>Select room members. “Call Everyone” invites every currently connected member.</p><div id="call-list" class="call-list"></div><div class="modal-actions"><button id="picker-cancel" class="btn secondary" type="button">Cancel</button><button id="picker-start" class="btn" type="button">Call selected</button></div></div></div>
 <div id="incoming-call" class="modalback hidden" role="dialog" aria-modal="true"><div class="modal"><h2 id="incoming-title">Incoming call</h2><p id="incoming-desc">A room member is calling you.</p><div class="modal-actions"><button id="call-decline" class="btn secondary" type="button">Decline</button><button id="call-accept" class="btn" type="button">Accept</button></div></div></div>
-<div id="call-stage" class="hidden"><div id="call-head"><div id="call-title">Call in progress</div><div id="call-status" class="muted">Connecting…</div><div style="flex:1"></div><button id="toggle-camera" class="callbtn" type="button">Camera off</button><button id="hangup" class="hangup" type="button">End call</button></div><div id="videos"></div></div>
+<div id="call-stage" class="hidden"><div id="call-head"><div id="call-title">Call in progress</div><div id="call-status" class="muted">Connecting…</div><div style="flex:1"></div><button id="toggle-camera" class="callbtn" type="button">Camera off</button><button id="screen-share" class="screen-share-btn hidden" type="button" aria-pressed="false">▣ Screen share</button><button id="hangup" class="hangup" type="button">End call</button></div><div id="videos"></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4/dist/tus.min.js"></script>
 <script>
@@ -231,6 +234,7 @@ let user=null, roomId=null, myName="", roomCode="", presenceChannel=null, dbChan
 let isRoomAdmin=false, joinRequestPoll=null, adminRequestPoll=null, membershipPoll=null, pendingRequestId=null, seenAdminRequests=new Set();
 const sessionId=crypto.randomUUID();
 let roomSessions=[], callMode="audio", activeCall=null, localStream=null, incomingInvite=null, callPeers=new Map(), remoteStreams=new Map(), pendingIce=new Map();
+let screenStream=null, activeScreenTrack=null, cameraVideoTrack=null, screenShareStarting=false;
 const RTC_CONFIG={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
 const seen=new Set(), MAX_IMAGE=5*1024*1024, MAX_VOICE=10*1024*1024, MAX_SHARED_FILE=50*1024*1024;
 const REACTION_EMOJIS=["👍","❤️","😂","😮","😢","🙏","🔥","🎉"];
@@ -372,9 +376,9 @@ function render(m){
    const actions=document.createElement("div");actions.className="file-actions";
    const view=document.createElement("button");view.type="button";view.className="file-action";view.textContent="View";
    const download=document.createElement("button");download.type="button";download.className="file-action";download.textContent="Download";actions.append(view,download);b.append(actions);
-   view.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600);if(error||!data?.signedUrl){alert("Could not open file: "+(error?.message||"URL unavailable"));return}window.open(data.signedUrl,"_blank","noopener,noreferrer")});
-   download.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600,{download:true});if(error||!data?.signedUrl){alert("Could not download file: "+(error?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=data.signedUrl;link.download=filePath.split("/").pop()||"cr3cka-file";document.body.append(link);link.click();link.remove()});
-   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"});
+   view.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600);if(error||!data?.signedUrl){alert("Could not open file: "+(error?.message||"URL unavailable"));return}window.open(data.signedUrl,"_blank","noopener,noreferrer")});
+   download.addEventListener("click",async ev=>{ev.stopPropagation();const {data,error}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600,{download:true});if(error||!data?.signedUrl){alert("Could not download file: "+(error?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=data.signedUrl;link.download=filePath.split("/").pop()||"cr3cka-file";document.body.append(link);link.click();link.remove()});
+   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)img.src=data.signedUrl;else img.alt="Image unavailable"});
  } else if(m.content.startsWith("cr3cka-file:")){
    const filePath=m.content.slice("cr3cka-file:".length);const fileName=filePath.split("/").pop()||"Shared file";const ext=fileName.split(".").pop().toLowerCase();
    const card=document.createElement("div");card.className="shared-file-card";card.style.cssText="display:flex;flex-direction:column;gap:9px;min-width:min(260px,70vw);max-width:100%;padding:12px;border:1px solid #285c50;border-radius:12px;background:#071411";
@@ -386,10 +390,10 @@ function render(m){
    const actions=document.createElement("div");actions.className="file-actions";
    const view=document.createElement("button");view.type="button";view.className="file-action";view.textContent="Open";
    const download=document.createElement("button");download.type="button";download.className="file-action";download.textContent="Download";actions.append(view,download);card.append(actions);b.append(card);
-   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl){preview.src=data.signedUrl;view.addEventListener("click",ev=>{ev.stopPropagation();window.open(data.signedUrl,"_blank","noopener,noreferrer")});download.addEventListener("click",async ev=>{ev.stopPropagation();const {data:d,error:de}=await sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600,{download:true});if(de||!d?.signedUrl){alert("Could not download file: "+(de?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=d.signedUrl;link.download=fileName;document.body.append(link);link.click();link.remove()})}else{title.textContent="File unavailable: "+fileName;view.disabled=true;download.disabled=true}});
+   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl){preview.src=data.signedUrl;view.addEventListener("click",ev=>{ev.stopPropagation();window.open(data.signedUrl,"_blank","noopener,noreferrer")});download.addEventListener("click",async ev=>{ev.stopPropagation();const {data:d,error:de}=await sb.storage.from("chat-uploads").createSignedUrl(filePath,3600,{download:true});if(de||!d?.signedUrl){alert("Could not download file: "+(de?.message||"URL unavailable"));return}const link=document.createElement("a");link.href=d.signedUrl;link.download=fileName;document.body.append(link);link.click();link.remove()})}else{title.textContent="File unavailable: "+fileName;view.disabled=true;download.disabled=true}});
  } else if(m.content.startsWith("cr3cka-audio:")){
    const filePath=m.content.slice(13);const wrap=document.createElement("div");wrap.className="voice-note";const icon=document.createElement("span");icon.textContent="🎙️";const right=document.createElement("div");right.style.flex="1";const label=document.createElement("div");label.className="voice-label";label.textContent="Voice message";const audio=document.createElement("audio");audio.controls=true;audio.preload="metadata";right.append(label,audio);wrap.append(icon,right);b.append(wrap);
-   sb.storage.from("Chat-Uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)audio.src=data.signedUrl;else label.textContent="Voice message unavailable"});
+   sb.storage.from("chat-uploads").createSignedUrl(filePath,3600).then(({data,error})=>{if(!error&&data?.signedUrl)audio.src=data.signedUrl;else label.textContent="Voice message unavailable"});
  } else b.textContent=m.content;
  a.append(b);
  const picker=document.createElement("div");picker.className="reaction-picker hidden";picker.setAttribute("aria-label","React to message");
@@ -480,12 +484,12 @@ $("file").addEventListener("change",async e=>{
    if(isShared && f.size > 6*1024*1024){
      await uploadLargeFileResumable(f,path);
    }else{
-     const {error}=await sb.storage.from("Chat-Uploads").upload(path,f,{contentType:f.type,cacheControl:"3600",upsert:false});
+     const {error}=await sb.storage.from("chat-uploads").upload(path,f,{contentType:f.type,cacheControl:"3600",upsert:false});
      if(error)throw error;
    }
    const prefix=isImage?"cr3cka-image:":"cr3cka-file:";
    const {error:messageError}=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:prefix+path});
-   if(messageError){await sb.storage.from("Chat-Uploads").remove([path]);throw messageError}
+   if(messageError){await sb.storage.from("chat-uploads").remove([path]);throw messageError}
    status("File sent successfully");
  }catch(e){console.error("File upload error:",e);status("Upload failed");alert("File upload failed: "+(e.message||e)+"\nCheck connection, bucket MIME types and Storage INSERT policy.")}
 });
@@ -509,7 +513,7 @@ function uploadLargeFileResumable(file,path){
        uploadDataDuringCreation:true,
        removeFingerprintOnSuccess:true,
        headers:{authorization:`Bearer ${session.access_token}`,apikey:SUPABASE_PUBLISHABLE_KEY},
-       metadata:{bucketName:"Chat-Uploads",objectName:path,contentType:file.type,cacheControl:"3600"},
+       metadata:{bucketName:"chat-uploads",objectName:path,contentType:file.type,cacheControl:"3600"},
        onError(error){reject(error)},
        onProgress(bytesUploaded,bytesTotal){
          const percent=Math.min(100,Math.round(bytesUploaded/bytesTotal*100));
@@ -544,9 +548,9 @@ async function stopAndSendVoice(){
  if(blob.size>MAX_VOICE){alert("Voice message is over 10 MB. Please record a shorter message.");status("Voice message too large");return}
  const ext=blob.type.includes("ogg")?"ogg":blob.type.includes("mp4")?"m4a":"webm";const path=roomId+"/voice-"+crypto.randomUUID()+"."+ext;
  const button=$("voice-record");button.disabled=true;status("Uploading voice message…");
- try{let r=await sb.storage.from("Chat-Uploads").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:false});if(r.error)throw r.error;
-   r=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:"cr3cka-audio:"+path});if(r.error){await sb.storage.from("Chat-Uploads").remove([path]);throw r.error}status("Voice message sent")
- }catch(e){console.error(e);alert("Voice message upload failed: "+e.message+"\nCheck Chat-Uploads bucket allowed MIME types include audio/webm, audio/ogg and audio/mp4.");status("Voice upload failed")}
+ try{let r=await sb.storage.from("chat-uploads").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:false});if(r.error)throw r.error;
+   r=await sb.from("chat_messages").insert({room_id:roomId,user_id:user.id,username:myName,content:"cr3cka-audio:"+path});if(r.error){await sb.storage.from("chat-uploads").remove([path]);throw r.error}status("Voice message sent")
+ }catch(e){console.error(e);alert("Voice message upload failed: "+e.message+"\nCheck chat-uploads bucket allowed MIME types include audio/webm, audio/ogg and audio/mp4.");status("Voice upload failed")}
  finally{button.disabled=false}
 }
 $("voice-record").addEventListener("click",async()=>{
@@ -562,7 +566,7 @@ $("clear-room").addEventListener("click",async()=>{
  const button=$("clear-room");button.disabled=true;status("Clearing room…");
  try{
    // Remove objects through the Storage API (not direct SQL against storage.objects).
-   const bucket=sb.storage.from("Chat-Uploads");
+   const bucket=sb.storage.from("chat-uploads");
    const {data:files,error:listError}=await bucket.list(roomId,{limit:1000});
    if(listError) throw listError;
    const paths=(files||[]).filter(f=>f.name && f.id).map(f=>roomId+"/"+f.name);
@@ -579,8 +583,8 @@ $("clear-room").addEventListener("click",async()=>{
 function onlineOthers(){const latest=new Map();roomSessions.forEach(p=>{if(p.session_id!==sessionId)latest.set(p.session_id,p)});return [...latest.values()]}
 function sendCallSignal(payload){if(!presenceChannel)throw new Error("Room realtime channel is not connected");return presenceChannel.send({type:"broadcast",event:"call-signal",payload:{...payload,from:sessionId,fromName:myName,roomId}})}
 function showPicker(mode){callMode=mode;const people=onlineOthers();if(!people.length){alert("No other room members are online yet.");return}if(people.length===1){startOutgoingCall(mode,[people[0]]);return}const list=$("call-list");list.replaceChildren();const all=document.createElement("label");all.className="call-option";const allBox=document.createElement("input");allBox.type="checkbox";allBox.id="call-everyone";const allText=document.createElement("span");allText.textContent="Call Everyone ("+people.length+")";all.append(allBox,allText);list.append(all);people.forEach(p=>{const row=document.createElement("label");row.className="call-option";const box=document.createElement("input");box.type="checkbox";box.className="call-person";box.value=p.session_id;const name=document.createElement("span");name.textContent=p.username||"Room member";row.append(box,name);list.append(row)});allBox.addEventListener("change",()=>list.querySelectorAll(".call-person").forEach(x=>x.checked=allBox.checked));list.querySelectorAll(".call-person").forEach(x=>x.addEventListener("change",()=>{if(!x.checked)allBox.checked=false;else allBox.checked=[...list.querySelectorAll(".call-person")].every(y=>y.checked)}));$("call-picker").classList.remove("hidden")}
-async function startOutgoingCall(mode,targets){if(!targets.length)return;callMode=mode;activeCall={id:crypto.randomUUID(),mode,initiator:true,targets:new Set(targets.map(p=>p.session_id)),accepted:new Set(),startedAt:Date.now()};$("call-picker").classList.add("hidden");$("call-title").textContent=(mode==="video"?"Video":"Audio")+" call · "+(targets.length===1?(targets[0].username||"member"):targets.length+" invitees");$("call-stage").classList.remove("hidden");$("call-status").textContent="Calling…";try{await getLocalMedia(mode);for(const p of targets)await sendCallSignal({type:"invite",to:p.session_id,callId:activeCall.id,mode,callerName:myName});}catch(e){console.error(e);alert("Could not start call: "+e.message);await endCall(false)}}
-async function getLocalMedia(mode){if(localStream)return localStream;localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:mode==="video"});addVideoTile(sessionId,myName,localStream,true);return localStream}
+async function startOutgoingCall(mode,targets){if(!targets.length)return;callMode=mode;activeCall={id:crypto.randomUUID(),mode,initiator:true,targets:new Set(targets.map(p=>p.session_id)),accepted:new Set(),startedAt:Date.now()};$("call-picker").classList.add("hidden");$("call-title").textContent=(mode==="video"?"Video":"Audio")+" call · "+(targets.length===1?(targets[0].username||"member"):targets.length+" invitees");$("call-stage").classList.remove("hidden");updateScreenShareButton();$("call-status").textContent="Calling…";try{await getLocalMedia(mode);updateScreenShareButton();for(const p of targets)await sendCallSignal({type:"invite",to:p.session_id,callId:activeCall.id,mode,callerName:myName});}catch(e){console.error(e);alert("Could not start call: "+e.message);await endCall(false)}}
+async function getLocalMedia(mode){if(localStream)return localStream;localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:mode==="video"});cameraVideoTrack=localStream.getVideoTracks()[0]||null;addVideoTile(sessionId,myName,localStream,true);return localStream}
 function callDisplayName(name){
  const clean=String(name||"User").trim()||"User";
  return clean.length<=6?clean:clean.charAt(0).toUpperCase();
@@ -623,7 +627,7 @@ function addVideoTile(id,name,stream,isLocal=false){
  }
 }
 function removePeer(id){const pc=callPeers.get(id);if(pc){pc.onicecandidate=null;pc.ontrack=null;pc.close();callPeers.delete(id)}remoteStreams.delete(id);pendingIce.delete(id);$("tile-"+id)?.remove()}
-async function createPeer(id,name,makeOffer){if(callPeers.has(id))return callPeers.get(id);if(!localStream)await getLocalMedia(callMode);const pc=new RTCPeerConnection(RTC_CONFIG);callPeers.set(id,pc);localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));pc.onicecandidate=e=>{if(e.candidate)sendCallSignal({type:"ice",to:id,callId:activeCall?.id,candidate:e.candidate.toJSON()}).catch(console.warn)};pc.ontrack=e=>{let stream=remoteStreams.get(id);if(!stream){stream=e.streams[0]||new MediaStream();remoteStreams.set(id,stream);addVideoTile(id,name,stream)}if(!e.streams[0]&&!stream.getTracks().some(t=>t.id===e.track.id))stream.addTrack(e.track);$("call-status").textContent="Connected"};pc.onconnectionstatechange=()=>{if(["failed","closed","disconnected"].includes(pc.connectionState)&&pc.connectionState!=="disconnected")removePeer(id)};if(makeOffer){const offer=await pc.createOffer();await pc.setLocalDescription(offer);await sendCallSignal({type:"offer",to:id,callId:activeCall.id,description:pc.localDescription.toJSON()})}return pc}
+async function createPeer(id,name,makeOffer){if(callPeers.has(id))return callPeers.get(id);if(!localStream)await getLocalMedia(callMode);const pc=new RTCPeerConnection(RTC_CONFIG);callPeers.set(id,pc);localStream.getTracks().forEach(t=>{if(t.kind==="video"&&activeScreenTrack)pc.addTrack(activeScreenTrack,screenStream||new MediaStream([activeScreenTrack]));else pc.addTrack(t,localStream)});pc.onicecandidate=e=>{if(e.candidate)sendCallSignal({type:"ice",to:id,callId:activeCall?.id,candidate:e.candidate.toJSON()}).catch(console.warn)};pc.ontrack=e=>{let stream=remoteStreams.get(id);if(!stream){stream=e.streams[0]||new MediaStream();remoteStreams.set(id,stream);addVideoTile(id,name,stream)}if(!e.streams[0]&&!stream.getTracks().some(t=>t.id===e.track.id))stream.addTrack(e.track);$("call-status").textContent="Connected"};pc.onconnectionstatechange=()=>{if(["failed","closed","disconnected"].includes(pc.connectionState)&&pc.connectionState!=="disconnected")removePeer(id)};if(makeOffer){const offer=await pc.createOffer();await pc.setLocalDescription(offer);await sendCallSignal({type:"offer",to:id,callId:activeCall.id,description:pc.localDescription.toJSON()})}return pc}
 async function handleCallSignal(m){if(!m||m.roomId!==roomId||m.to!==sessionId)return;
  try{
  if(m.type==="invite"){if(activeCall){await sendCallSignal({type:"busy",to:m.from,callId:m.callId});return}incomingInvite={id:m.callId,from:m.from,name:m.fromName||m.callerName||"Room member",mode:m.mode||"audio"};$("incoming-title").textContent="Incoming "+(incomingInvite.mode==="video"?"video":"audio")+" call";$("incoming-desc").textContent=incomingInvite.name+" is calling you.";$("incoming-call").classList.remove("hidden");return}
@@ -635,11 +639,16 @@ async function handleCallSignal(m){if(!m||m.roomId!==roomId||m.to!==sessionId)re
  if(m.type==="hangup"){if(activeCall?.id===m.callId){removePeer(m.from);if(callPeers.size===0)await endCall(false);else $("call-status").textContent=(m.fromName||"Member")+" left the call"}return}
  }catch(e){console.error("Call signaling error",e);$("call-status").textContent="Call connection issue: "+e.message}
 }
-$("call-accept").addEventListener("click",async()=>{if(!incomingInvite)return;const invite=incomingInvite;incomingInvite=null;$("incoming-call").classList.add("hidden");activeCall={id:invite.id,mode:invite.mode,initiator:false,targets:new Set([invite.from]),accepted:new Set(),startedAt:Date.now()};callMode=invite.mode;$("call-title").textContent=(callMode==="video"?"Video":"Audio")+" call · "+invite.name;$("call-stage").classList.remove("hidden");$("call-status").textContent="Connecting…";try{await getLocalMedia(callMode);await sendCallSignal({type:"accept",to:invite.from,callId:invite.id})}catch(e){alert("Microphone/camera permission failed: "+e.message);await sendCallSignal({type:"decline",to:invite.from,callId:invite.id}).catch(()=>{});await endCall(false)}});
+$("call-accept").addEventListener("click",async()=>{if(!incomingInvite)return;const invite=incomingInvite;incomingInvite=null;$("incoming-call").classList.add("hidden");activeCall={id:invite.id,mode:invite.mode,initiator:false,targets:new Set([invite.from]),accepted:new Set(),startedAt:Date.now()};callMode=invite.mode;updateScreenShareButton();$("call-title").textContent=(callMode==="video"?"Video":"Audio")+" call · "+invite.name;$("call-stage").classList.remove("hidden");$("call-status").textContent="Connecting…";try{await getLocalMedia(callMode);await sendCallSignal({type:"accept",to:invite.from,callId:invite.id})}catch(e){alert("Microphone/camera permission failed: "+e.message);await sendCallSignal({type:"decline",to:invite.from,callId:invite.id}).catch(()=>{});await endCall(false)}});
 $("call-decline").addEventListener("click",async()=>{if(incomingInvite){await sendCallSignal({type:"decline",to:incomingInvite.from,callId:incomingInvite.id}).catch(console.warn);incomingInvite=null}$("incoming-call").classList.add("hidden")});
 $("picker-cancel").addEventListener("click",()=>$("call-picker").classList.add("hidden"));
 $("picker-start").addEventListener("click",()=>{const list=$("call-list"),all=list.querySelector("#call-everyone");let ids;if(all?.checked)ids=onlineOthers();else{const selected=new Set([...list.querySelectorAll(".call-person:checked")].map(x=>x.value));ids=onlineOthers().filter(p=>selected.has(p.session_id))}if(!ids.length){alert("Select at least one room member.");return}startOutgoingCall(callMode,ids)});
 $("audio-call").addEventListener("click",()=>showPicker("audio"));$("video-call").addEventListener("click",()=>showPicker("video"));
+function updateScreenShareButton(){const b=$("screen-share");const show=!!activeCall&&activeCall.mode==="video"&&!$("call-stage").classList.contains("hidden");b.classList.toggle("hidden",!show);if(!show){b.disabled=false;b.textContent="▣ Screen share";b.setAttribute("aria-pressed","false");return}b.textContent=activeScreenTrack?"■ Stop sharing":"▣ Screen share";b.setAttribute("aria-pressed",activeScreenTrack?"true":"false");b.disabled=screenShareStarting}
+async function stopScreenShare(){const old=activeScreenTrack;if(!old){screenStream?.getTracks().forEach(t=>t.stop());screenStream=null;return}activeScreenTrack=null;try{const cam=cameraVideoTrack||localStream?.getVideoTracks()[0]||null;for(const pc of callPeers.values()){const sender=pc.getSenders().find(s=>s.track?.kind==="video"||s.__cr3ckaVideoSender);if(sender&&cam){await sender.replaceTrack(cam);sender.__cr3ckaVideoSender=true}}const v=$("tile-"+sessionId)?.querySelector("video");if(v&&localStream)v.srcObject=localStream}catch(e){console.warn("Could not restore camera track",e)}finally{old.onended=null;try{old.stop()}catch{}screenStream?.getTracks().forEach(t=>{try{t.stop()}catch{}});screenStream=null;updateScreenShareButton();$("call-status").textContent="Screen sharing stopped"}}
+async function startScreenShare(){if(!activeCall||activeCall.mode!=="video"){alert("Screen sharing is available only during a video call.");return}if(!navigator.mediaDevices?.getDisplayMedia){alert("This browser/device does not support screen sharing. Try an updated desktop Chrome, Edge or Firefox over HTTPS. Many mobile browsers do not support screen capture.");return}screenShareStarting=true;updateScreenShareButton();try{screenStream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});const track=screenStream.getVideoTracks()[0];if(!track)throw new Error("No screen video track was provided.");activeScreenTrack=track;cameraVideoTrack=cameraVideoTrack||localStream?.getVideoTracks()[0]||null;for(const pc of callPeers.values()){let sender=pc.getSenders().find(s=>s.track?.kind==="video"||s.__cr3ckaVideoSender);if(sender){await sender.replaceTrack(track);sender.__cr3ckaVideoSender=true}else{sender=pc.addTrack(track,screenStream);sender.__cr3ckaVideoSender=true}}const v=$("tile-"+sessionId)?.querySelector("video");if(v){v.srcObject=new MediaStream([track]);v.play().catch(()=>{})}track.onended=()=>{if(activeScreenTrack===track)stopScreenShare()};$("call-status").textContent="Sharing screen"}catch(e){console.error("Screen share failed",e);screenStream?.getTracks().forEach(t=>t.stop());screenStream=null;activeScreenTrack=null;if(e?.name!=="NotAllowedError"&&e?.name!=="AbortError")alert("Could not start screen sharing: "+(e.message||e))}finally{screenShareStarting=false;updateScreenShareButton()}}
+$("screen-share").addEventListener("click",async()=>{if(screenShareStarting)return;if(activeScreenTrack){await stopScreenShare();return}await startScreenShare()});
+
 $("toggle-camera").addEventListener("click",()=>{if(!localStream)return;const tracks=localStream.getVideoTracks();if(!tracks.length){alert("This is an audio call. Start a video call to use the camera.");return}const enabled=!tracks[0].enabled;tracks.forEach(t=>t.enabled=enabled);$("toggle-camera").textContent=enabled?"Camera off":"Camera on"});
 async function endCall(notify=true){
  const old=activeCall;
@@ -648,9 +657,11 @@ async function endCall(notify=true){
   for(const id of [...callPeers.keys()]){try{removePeer(id)}catch(e){console.warn("Peer cleanup:",e);callPeers.delete(id);remoteStreams.delete(id)}}
  }catch(e){console.warn("Call cleanup:",e)}
  finally{
+  if(activeScreenTrack||screenStream){const shared=activeScreenTrack;activeScreenTrack=null;if(shared){shared.onended=null;try{shared.stop()}catch{}}screenStream?.getTracks().forEach(t=>{try{t.stop()}catch{}});screenStream=null}
+  cameraVideoTrack=null;screenShareStarting=false;
   if(localStream){for(const track of localStream.getTracks()){try{track.stop()}catch{}}localStream=null}
   $("tile-"+sessionId)?.remove();activeCall=null;incomingInvite=null;pendingIce.clear();callPeers.clear();remoteStreams.clear();
-  $("incoming-call").classList.add("hidden");$("call-picker").classList.add("hidden");$("call-stage").classList.add("hidden");$("call-stage").classList.remove("audio-call-mode");$("videos").replaceChildren();$("call-status").textContent="Call ended";
+  $("incoming-call").classList.add("hidden");$("call-picker").classList.add("hidden");$("call-stage").classList.add("hidden");$("call-stage").classList.remove("audio-call-mode");$("videos").replaceChildren();$("screen-share").classList.add("hidden");$("screen-share").textContent="▣ Screen share";$("screen-share").setAttribute("aria-pressed","false");$("call-status").textContent="Call ended";
   // The call UI is an overlay; hiding it returns the user to the existing chat dashboard.
   $("chat").classList.remove("hidden");
  }
@@ -658,7 +669,7 @@ async function endCall(notify=true){
 $("hangup").addEventListener("click",()=>endCall(true));
 
 async function removeRoomFiles(){
- const bucket=sb.storage.from("Chat-Uploads"),paths=[];
+ const bucket=sb.storage.from("chat-uploads"),paths=[];
  async function walk(prefix){
    const {data,error}=await bucket.list(prefix,{limit:1000});
    if(error)throw error;
