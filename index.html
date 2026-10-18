@@ -3,6 +3,24 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b14"><title>Cr3cka Chat</title>
 <style>
+ .contact-email {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #ff304f;
+}
+
+.contact-email a {
+  color: #ff304f;
+  font-weight: 700;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(255, 48, 79, 0.5);
+}
+
+.contact-email a:hover {
+  color: #ff7187;
+  text-decoration: underline;
+}
 :root{color-scheme:dark;--bg:#050907;--p:#09130d;--line:#1c3c29;--g:#42ff88;--t:#e0f8e8;--m:#85a891;--r:#ff6579}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10291a,#050907 58%);color:var(--t);font:14px/1.5 ui-monospace,monospace;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 #join{min-height:100vh;display:grid;place-items:center;padding:20px}.card{width:min(100%,430px);background:#07100bf2;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 0 45px #00ff6610}.logo{font-size:22px;font-weight:800;color:var(--g);text-shadow:0 0 18px #35ff7650}.sub{font-size:11px;color:var(--m);margin:7px 0 25px}label{display:block;font-size:11px;color:#a8cbb5;text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px}input{width:100%;background:#040906;color:var(--t);border:1px solid var(--line);border-radius:7px;padding:12px;outline:none}input:focus{border-color:var(--g)}.btn{border:1px solid #2b9854;background:#0e2a19;color:var(--g);border-radius:7px;padding:11px 14px;font-weight:700}.primary{width:100%;margin-top:20px;background:var(--g);color:#031008;border:0}#err{color:var(--r);font-size:12px;margin-top:12px;white-space:pre-wrap}.hint{font-size:11px;color:#6f8d79;margin-top:17px}
@@ -202,7 +220,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter a Username" autocomplete="nickname" required>
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
-<div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div></div></section>
+<div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div></div></section><div class="contact-email">
+  Contact:
+  <a href="mailto:contact@cr3cka.in">contact@cr3cka.in</a>
+</div>
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
 <div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime,application/pdf" hidden><button id="attach" class="icon" type="button" title="Attach image, video or PDF">＋</button><button id="voice-record" class="icon" type="button" title="Record voice message" aria-label="Record voice message">🎙</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Keep room codes private</div></main></section>
