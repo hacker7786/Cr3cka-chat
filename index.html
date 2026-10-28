@@ -95,26 +95,104 @@
   }
 }
   
- .contact-email {
-  margin-top: -42px;
-  text-align: center;
+ /* Is code ko apni CSS file ke bilkul niche paste kar dein */
+.hacker-contact-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  padding: 10px;
+}
+
+.hacker-btn {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
-  color: #ff304f;
+  font-weight: bold;
+  letter-spacing: 1px;
+  background: #050505;
+  border: 1px solid #00f5ff;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.1);
+}
+
+.btn-content {
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  color: #00f5ff;
+  transition: color 0.3s ease;
 }
 
-.contact-email a {
-  color: #ff304f;
-  font-weight: 700;
-  text-decoration: none;
-  text-shadow: 0 0 8px rgba(255, 48, 79, 0.5);
+.email-icon {
+  position: relative;
+  width: 16px;
+  height: 11px;
+  border: 2px solid #00f5ff;
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
 }
 
-.contact-email a:hover {
-  color: #ff7187;
-  text-decoration: underline;
+.email-icon::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid #00f5ff;
+  border-bottom: 2px solid #00f5ff;
+  transform: rotate(-45deg);
+  transform-origin: top left;
+  transition: border-color 0.3s ease;
 }
+
+.hacker-btn:hover {
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.6), inset 0 0 10px rgba(0, 245, 255, 0.4);
+  transform: scale(1.03);
+}
+
+.hacker-btn:hover .btn-content {
+  color: #ffffff;
+}
+.hacker-btn:hover .email-icon {
+  border-color: #ffffff;
+}
+.hacker-btn:hover .email-icon::before {
+  border-color: #ffffff;
+}
+
+.btn-glitch-bg {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.15), transparent);
+  transition: all 0.5s ease;
+  z-index: 1;
+}
+.hacker-btn:hover .btn-glitch-bg {
+  left: 100%;
+}
+
+@media (max-width: 480px) {
+  .btn-content {
+    padding: 8px 14px;
+  }
+  .btn-text {
+    font-size: 11px;
+  }
+}
+
 :root{color-scheme:dark;--bg:#050907;--p:#09130d;--line:#1c3c29;--g:#42ff88;--t:#e0f8e8;--m:#85a891;--r:#ff6579}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10291a,#050907 58%);color:var(--t);font:14px/1.5 ui-monospace,monospace;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 #join{min-height:100vh;display:grid;place-items:center;padding:20px}.card{width:min(100%,430px);background:#07100bf2;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 0 45px #00ff6610}.logo{font-size:22px;font-weight:800;color:var(--g);text-shadow:0 0 18px #35ff7650}.sub{font-size:11px;color:var(--m);margin:7px 0 25px}label{display:block;font-size:11px;color:#a8cbb5;text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px}input{width:100%;background:#040906;color:var(--t);border:1px solid var(--line);border-radius:7px;padding:12px;outline:none}input:focus{border-color:var(--g)}.btn{border:1px solid #2b9854;background:#0e2a19;color:var(--g);border-radius:7px;padding:11px 14px;font-weight:700}.primary{width:100%;margin-top:20px;background:var(--g);color:#031008;border:0}#err{color:var(--r);font-size:12px;margin-top:12px;white-space:pre-wrap}.hint{font-size:11px;color:#6f8d79;margin-top:17px}
