@@ -421,7 +421,52 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter a Username" autocomplete="nickname" required>
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
-<div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div></div></section>
+<div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div>
+
+<!-- About section: landing page only -->
+<section id="about-cr3cka-chat">
+
+<h1>Cr3cka Chat — Online Chat Rooms</h1>
+
+<p>
+  Cr3cka Chat is a browser-based chat platform designed
+  to help people connect using room codes. Explore its
+  messaging features and available audio or video calling
+  options directly through your browser.
+</p>
+
+<h2>How Cr3cka Chat Works</h2>
+<p>
+  Create or join a room using the supported room-code
+  workflow, connect with other participants, and use the
+  chat features available in the room.
+</p>
+
+<h2>Privacy and Security</h2>
+<p>
+  Learn how Cr3cka Chat handles account access, room
+  membership, messages, and shared files. Review the
+  platform's privacy information before sharing sensitive
+  information.
+</p>
+
+<h2>Explore Cr3cka</h2>
+<p>
+  Visit our cybersecurity and ethical hacking learning
+  resources for practical security knowledge and projects.
+</p>
+
+<p>
+  <a href="/cybersecurity/">Explore cybersecurity resources</a>
+</p>
+<p>
+  <a href="/ethical-hacking/">Explore ethical hacking guides</a>
+</p>
+
+</section>
+
+</div></section>
+
 <!-- Cr3cka Hacker Contact Button -->
 <div class="hacker-contact-wrapper">
   <a href="mailto:contact@cr3cka.in" class="hacker-btn">
@@ -435,7 +480,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
-<div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime,application/pdf" hidden><button id="attach" class="icon" type="button" title="Attach image, video or PDF">＋</button><button id="voice-record" class="icon" type="button" title="Record voice message" aria-label="Record voice message">🎙</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Keep room codes private</div></main></section>
+<div id="messages" class="messages"><div class="empty">— start of conversation —</div></div><form id="send-form" class="composer"><input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime,application/pdf" hidden><button id="attach" class="icon" type="button" title="Attach image, video or PDF">＋</button><button id="voice-record" class="icon" type="button" title="Record voice message" aria-label="Record voice message">🎙</button><input id="message" maxlength="10000" placeholder="Type a message…" autocomplete="off" aria-label="Message"><button class="icon send" type="submit">➤</button></form><div class="foot">Realtime chat • Supabase • Fully Private</div></main></section>
 <div id="join-request-modal" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="join-request-title"><div class="modal"><h2 id="join-request-title">Room access requested</h2><p id="join-request-desc">Waiting for the room admin to approve your request…</p><div id="join-request-actions" class="modal-actions"><button id="cancel-join-request" class="btn secondary" type="button">Cancel</button></div></div></div>
 <div id="admin-requests" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="admin-requests-title"><div class="modal"><h2 id="admin-requests-title">Pending join requests</h2><p>Approve only people you want to let into this room.</p><div id="admin-request-list" class="call-list"></div><div class="modal-actions"><button id="close-admin-requests" class="btn secondary" type="button">Close</button></div></div></div>
 <div id="call-picker" class="modalback hidden" role="dialog" aria-modal="true" aria-labelledby="picker-title"><div class="modal"><h2 id="picker-title">Start a call</h2><p>Select room members. “Call Everyone” invites every currently connected member.</p><div id="call-list" class="call-list"></div><div class="modal-actions"><button id="picker-cancel" class="btn secondary" type="button">Cancel</button><button id="picker-start" class="btn" type="button">Call selected</button></div></div></div>
@@ -933,45 +978,5 @@ function resetToJoin(){
 $("leave").addEventListener("click",leave);
 window.addEventListener("beforeunload",()=>{if(presenceChannel)sb.removeChannel(presenceChannel);if(dbChannel)sb.removeChannel(dbChannel);if(reactionChannel)sb.removeChannel(reactionChannel)});
 </script>
-<!-- ADD THE SEO ABOUT SECTION HERE -->
-<section id="about-cr3cka-chat">
-  <h1>Cr3cka Chat — Online Chat Rooms</h1>
-
-  <p>
-    Cr3cka Chat is a browser-based chat platform designed
-    to help people connect using room codes. Explore its
-    messaging features and available audio or video calling
-    options directly through your browser.
-  </p>
-
-  <h2>How Cr3cka Chat Works</h2>
-  <p>
-    Create or join a room using the supported room-code
-    workflow, connect with other participants, and use the
-    chat features available in the room.
-  </p>
-
-  <h2>Privacy and Security</h2>
-  <p>
-    Learn how Cr3cka Chat handles account access, room
-    membership, messages, and shared files. Review the
-    platform's privacy information before sharing sensitive
-    information.
-  </p>
-
-  <h2>Explore Cr3cka</h2>
-  <p>
-    Visit our cybersecurity and ethical hacking learning
-    resources for practical security knowledge and projects.
-  </p>
-
-  <p>
-    <a href="/cybersecurity/">Explore cybersecurity resources</a>
-  </p>
-  <p>
-    <a href="/ethical-hacking/">Explore ethical hacking guides</a>
-  </p>
-</section>
-
 </body>
 </html>
