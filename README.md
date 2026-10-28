@@ -45,6 +45,7 @@ The project combines modern web technologies with Supabase backend services to c
 | 📱 Responsive UI | Designed for desktop and mobile screens. |
 | 🌗 Theme Toggle | Switch between dark and light themes. |
 | ☁️ Supabase Integration | Backend services, database and file storage. |
+| 📩 Email Support | 24/7 Email support service. |
 
 ## 🛠️ Tech Stack
 
