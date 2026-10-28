@@ -1,34 +1,63 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080b14">
-<title>Cr3cka Chat | Online Chat Rooms, Messaging &amp; Calls</title>
-<meta name="description" content="Use Cr3cka Chat to connect through browser-based chat rooms with room codes, realtime messaging, file sharing, voice notes, and audio or video calls.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#080b14"><title>Cr3cka Chat | Online Chat Rooms</title>
+<meta name="description" content="Connect with friends through Cr3cka Chat, a browser-based chat platform with room codes, messaging, and audio or video calls.">
 <link rel="canonical" href="https://cr3cka.in/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cr3cka Chat">
-<meta property="og:title" content="Cr3cka Chat | Online Chat Rooms, Messaging &amp; Calls">
-<meta property="og:description" content="Connect through browser-based chat rooms with room codes, realtime messaging, file sharing, voice notes, and audio or video calls.">
+<meta property="og:title" content="Cr3cka Chat | Online Chat Rooms">
+<meta property="og:description" content="Join a chat room, connect with friends, and explore Cr3cka Chat's messaging and calling features.">
 <meta property="og:url" content="https://cr3cka.in/">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cr3cka Chat | Online Chat Rooms, Messaging &amp; Calls">
-<meta name="twitter:description" content="Connect through browser-based chat rooms with room codes, realtime messaging, file sharing, voice notes, and audio or video calls.">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Cr3cka Chat",
-  "url": "https://cr3cka.in/",
-  "applicationCategory": "CommunicationApplication",
-  "operatingSystem": "Any device with a modern web browser",
-  "description": "A browser-based chat application with room-code access, realtime messaging, file sharing, voice notes, and audio or video calling features."
-}
-</script>
+<meta name="twitter:title" content="Cr3cka Chat | Online Chat Rooms">
+<meta name="twitter:description" content="A browser-based chat platform for connecting through chat rooms.">
+  
 <style>
+ /* SEO About section — matches Cr3cka's black/neon theme */
+#about-cr3cka-chat {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 28px 20px;
+  color: #f2f5f7;
+  background: #080808;
+  border: 1px solid #242424;
+  border-radius: 14px;
+  line-height: 1.8;
+}
+
+#about-cr3cka-chat h1,
+#about-cr3cka-chat h2 {
+  color: #00f5ff;
+}
+
+#about-cr3cka-chat h1 {
+  font-size: clamp(22px, 4vw, 32px);
+}
+
+#about-cr3cka-chat h2 {
+  margin-top: 24px;
+  font-size: 18px;
+}
+
+#about-cr3cka-chat p {
+  color: #c3c8ce;
+}
+
+#about-cr3cka-chat a {
+  color: #00f5ff;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  #about-cr3cka-chat {
+    margin: 20px 12px;
+    padding: 20px 16px;
+  }
+}
+  
  .contact-email {
   margin-top: -42px;
   text-align: center;
@@ -751,4 +780,46 @@ function resetToJoin(){
 
 $("leave").addEventListener("click",leave);
 window.addEventListener("beforeunload",()=>{if(presenceChannel)sb.removeChannel(presenceChannel);if(dbChannel)sb.removeChannel(dbChannel);if(reactionChannel)sb.removeChannel(reactionChannel)});
-</script></body></html>
+</script>
+<!-- ADD THE SEO ABOUT SECTION HERE -->
+<section id="about-cr3cka-chat">
+  <h1>Cr3cka Chat — Online Chat Rooms</h1>
+
+  <p>
+    Cr3cka Chat is a browser-based chat platform designed
+    to help people connect using room codes. Explore its
+    messaging features and available audio or video calling
+    options directly through your browser.
+  </p>
+
+  <h2>How Cr3cka Chat Works</h2>
+  <p>
+    Create or join a room using the supported room-code
+    workflow, connect with other participants, and use the
+    chat features available in the room.
+  </p>
+
+  <h2>Privacy and Security</h2>
+  <p>
+    Learn how Cr3cka Chat handles account access, room
+    membership, messages, and shared files. Review the
+    platform's privacy information before sharing sensitive
+    information.
+  </p>
+
+  <h2>Explore Cr3cka</h2>
+  <p>
+    Visit our cybersecurity and ethical hacking learning
+    resources for practical security knowledge and projects.
+  </p>
+
+  <p>
+    <a href="/cybersecurity/">Explore cybersecurity resources</a>
+  </p>
+  <p>
+    <a href="/ethical-hacking/">Explore ethical hacking guides</a>
+  </p>
+</section>
+
+</body>
+</html>
