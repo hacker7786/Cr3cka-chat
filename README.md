@@ -149,7 +149,7 @@ Security depends on correct backend configuration, not just the frontend design.
 Cr3cka Chat can be hosted on static hosting platforms, provided its Supabase backend is configured correctly.
 
 - **GitHub Pages**
-- **Vercel**
+- **cloudflare**
 - **Netlify**
 - Other static hosting providers
 
@@ -160,6 +160,12 @@ After deployment, test messaging, room access, admin controls, Storage permissio
 ```text
 Cr3cka-chat/
 ├── index.html
+├── robots.txt
+├── sitemap.xml
+├── CNAME
+├── google4b63fed60c66d744.html
+├── favicon.png
+├── .nojekyll
 ├── README.md
 ├── LICENSE
 └── assets/
