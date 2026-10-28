@@ -18,43 +18,80 @@
 <style>
  /* SEO About section — matches Cr3cka's black/neon theme */
 #about-cr3cka-chat {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 28px 20px;
-  color: #ff005d;
-  background: #080808;
-  border: 1px solid #242424;
-  border-radius: 14px;
-  line-height: 1.8;
+  max-width: 800px; /* Thoda side compression content ko modern dikhane ke liye */
+  margin: 30px auto; /* Margin thodi kam ki */
+  padding: 24px 28px; /* Compact padding */
+  color: #c3c8ce;
+  background: radial-gradient(circle at top left, #0e171b, #050505); /* Deep space dark gradient */
+  border: 1px solid rgba(0, 245, 255, 0.15); /* Sleek translucent cyan border */
+  border-radius: 10px; /* Modern sharp-edge curve */
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 245, 255, 0.03); /* Holographic glow */
+  line-height: 1.6;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+/* Headings Upgrade - Glow Effects */
 #about-cr3cka-chat h1,
 #about-cr3cka-chat h2 {
   color: #00f5ff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.3); /* Neon glowing headlines */
 }
 
 #about-cr3cka-chat h1 {
-  font-size: clamp(22px, 4vw, 32px);
+  font-size: clamp(20px, 3.5vw, 28px); /* Sleeker fluid font scale */
+  border-bottom: 1px dashed rgba(0, 245, 255, 0.2);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
 }
 
 #about-cr3cka-chat h2 {
-  margin-top: 24px;
-  font-size: 18px;
+  margin-top: 28px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  text-transform: uppercase; /* Futuristic command line style */
 }
 
 #about-cr3cka-chat p {
-  color: #c3c8ce;
+  color: #a4b0be; /* Highly readable matrix tint */
+  margin-bottom: 14px;
+  font-size: 14.5px;
 }
 
+/* Links transformed into Futuristic Terminal Buttons */
 #about-cr3cka-chat a {
+  display: inline-block;
   color: #00f5ff;
-  text-underline-offset: 4px;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  margin: 6px 8px 6px 0;
+  background: rgba(0, 245, 255, 0.05);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
+/* Hover Action: Pure Tech Vibe */
+#about-cr3cka-chat a:hover {
+  background: #00f5ff;
+  color: #050505;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Responsive Scaling for Mobile Screens */
 @media (max-width: 600px) {
   #about-cr3cka-chat {
-    margin: 20px 12px;
-    padding: 20px 16px;
+    margin: 15px 10px;
+    padding: 16px 20px;
+  }
+  #about-cr3cka-chat a {
+    display: block; /* Mobile par buttons full width automatic stack ho jayenge */
+    text-align: center;
+    margin-right: 0;
   }
 }
   
