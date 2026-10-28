@@ -19,83 +19,69 @@
   
 <style>
  /* SEO About section — matches Cr3cka's black/neon theme */
+
 #about-cr3cka-chat {
-  max-width: 800px; /* Thoda side compression content ko modern dikhane ke liye */
-  margin: 30px auto; /* Margin thodi kam ki */
-  padding: 24px 28px; /* Compact padding */
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  max-width: 900px;
+  margin: 28px auto;
+  padding: 22px 26px;
   color: #c3c8ce;
-  background: radial-gradient(circle at top left, #0e171b, #050505); /* Deep space dark gradient */
-  border: 1px solid rgba(0, 245, 255, 0.15); /* Sleek translucent cyan border */
-  border-radius: 10px; /* Modern sharp-edge curve */
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 245, 255, 0.03); /* Holographic glow */
-  line-height: 1.6;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: radial-gradient(circle at top left, #0e171b, #050505);
+  border: 1px solid rgba(0, 245, 255, 0.18);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.04);
+  line-height: 1.65;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* Headings Upgrade - Glow Effects */
 #about-cr3cka-chat h1,
 #about-cr3cka-chat h2 {
   color: #00f5ff;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 10px rgba(0, 245, 255, 0.3); /* Neon glowing headlines */
+  text-shadow: 0 0 8px rgba(0, 245, 255, 0.2);
 }
 
 #about-cr3cka-chat h1 {
-  font-size: clamp(20px, 3.5vw, 28px); /* Sleeker fluid font scale */
+  font-size: clamp(21px, 2.5vw, 28px);
   border-bottom: 1px dashed rgba(0, 245, 255, 0.2);
   padding-bottom: 12px;
-  margin-bottom: 24px;
 }
 
 #about-cr3cka-chat h2 {
-  margin-top: 28px;
-  margin-bottom: 8px;
+  margin-top: 22px;
   font-size: 16px;
-  text-transform: uppercase; /* Futuristic command line style */
 }
 
 #about-cr3cka-chat p {
-  color: #a4b0be; /* Highly readable matrix tint */
-  margin-bottom: 14px;
-  font-size: 14.5px;
+  color: #a4b0be;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
-/* Links transformed into Futuristic Terminal Buttons */
 #about-cr3cka-chat a {
   display: inline-block;
   color: #00f5ff;
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 6px 14px;
-  margin: 6px 8px 6px 0;
-  background: rgba(0, 245, 255, 0.05);
+  padding: 7px 12px;
+  margin: 5px 8px 5px 0;
   border: 1px solid rgba(0, 245, 255, 0.3);
   border-radius: 4px;
-  transition: all 0.3s ease;
 }
 
-/* Hover Action: Pure Tech Vibe */
-#about-cr3cka-chat a:hover {
-  background: #00f5ff;
-  color: #050505;
-  box-shadow: 0 0 15px rgba(0, 245, 255, 0.6);
-  transform: translateY(-1px);
-}
-
-/* Responsive Scaling for Mobile Screens */
 @media (max-width: 600px) {
   #about-cr3cka-chat {
-    margin: 15px 10px;
-    padding: 16px 20px;
+    width: 100%;
+    margin: 22px 0;
+    padding: 16px;
   }
+
   #about-cr3cka-chat a {
-    display: block; /* Mobile par buttons full width automatic stack ho jayenge */
+    display: block;
     text-align: center;
     margin-right: 0;
   }
 }
+
   
 .contact-email {
   margin-top: -42px;
@@ -423,6 +409,17 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
 <div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div>
 
+<!-- Cr3cka Hacker Contact Button -->
+<div class="hacker-contact-wrapper">
+  <a href="mailto:contact@cr3cka.in" class="hacker-btn">
+    <span class="btn-glitch-bg"></span>
+    <span class="btn-content">
+      <span class="email-icon"></span>
+      <span class="btn-text">CONNECT://contact@cr3cka.in</span>
+    </span>
+  </a>
+</div>
+      
 <!-- About section: landing page only -->
 <section id="about-cr3cka-chat">
 
@@ -466,17 +463,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 </section>
 
 </div></section>
-
-<!-- Cr3cka Hacker Contact Button -->
-<div class="hacker-contact-wrapper">
-  <a href="mailto:contact@cr3cka.in" class="hacker-btn">
-    <span class="btn-glitch-bg"></span>
-    <span class="btn-content">
-      <span class="email-icon"></span>
-      <span class="btn-text">CONNECT://contact@cr3cka.in</span>
-    </span>
-  </a>
-</div>
 
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
