@@ -19,7 +19,7 @@
 
 ---
 
-## 🖤 About Cr3cka Chat
+## ❤️ About Cr3cka Chat ❤️
 
 **Cr3cka Chat** is a browser-based real-time communication project built with a privacy-conscious approach and a sleek black-and-neon-cyan interface.
 
