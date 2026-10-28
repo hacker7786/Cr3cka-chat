@@ -21,6 +21,7 @@
  /* SEO About section — matches Cr3cka's black/neon theme */
 
 #about-cr3cka-chat {
+  display: block;
   box-sizing: border-box;
   width: calc(100% - 40px);
   max-width: 900px;
@@ -301,8 +302,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: -42px auto 20px;
+  margin: 8px auto 0;
   padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
   position: relative;
   z-index: 2;
 }
@@ -401,6 +404,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   }
 }
 
+/* Keep the SEO About section on desktop landing page only. */
+@media (max-width: 680px) {
+  #about-cr3cka-chat {
+    display: none !important;
+  }
+}
+
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Fully Private ]</div>
@@ -408,8 +418,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
 <div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div>
+</div><!-- Close .card; leave the original room form and styling unchanged. -->
 
-<!-- Cr3cka Hacker Contact Button -->
+<!-- Cr3cka Hacker Contact Button: immediately below the hint/caption -->
 <div class="hacker-contact-wrapper">
   <a href="mailto:contact@cr3cka.in" class="hacker-btn">
     <span class="btn-glitch-bg"></span>
@@ -461,6 +472,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 </p>
 
 </section>
+</section><!-- Close #join landing page before the separate chat dashboard. -->
 
 <section id="chat" class="hidden"><aside class="side"><div class="logo">root@<span style="color:var(--t)">cr3cka-chat</span>:~#</div><div class="room"><div class="label">ROOM CODE</div><div id="room-display" class="roomcode">----</div><div id="online" class="online">0 online</div></div><div class="members-label label">MEMBERS</div><div id="members" class="members"></div><button id="leave" class="leave">← Leave room</button></aside>
 <main class="main"><header class="top"><div class="muted">ROOM // <b id="title" style="color:var(--g)">----</b></div><button id="audio-call" class="callbtn" type="button">☎ Audio</button><button id="video-call" class="callbtn video" type="button">▣ Video</button><button id="clear-room" class="icon" type="button" title="Delete all room messages and uploaded images" style="font-size:10px;padding:5px 8px;min-width:auto">Clear chat</button><div id="status" class="muted">Connecting…</div></header>
