@@ -213,7 +213,7 @@ If you like Cr3cka Chat:
 
 **Cr3cka Chat — More Than Just a Chat.**
 
-[🌐 Live Website](https://cr3cka.in) · [💻 GitHub Repository](https://github.com/hacker7786/Cr3cka-chat) - [📩 Email Support](CONNECT://contact@cr3cka.in)
+[🌐 Live Website](https://cr3cka.in) · [💻 GitHub Repository](https://github.com/hacker7786/Cr3cka-chat) - [📩 Email Support](mailto:contact@cr3cka.in)
 
 </div>
 
