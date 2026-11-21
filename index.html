@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#04101a"><title>Cr3cka Chat | Online Chat Rooms</title>
 <meta name="description" content="Connect with friends through Cr3cka Chat, a browser-based chat platform with room codes, messaging, and audio or video calls.">
@@ -696,6 +697,7 @@ body.theme-light #join-form input:focus{border-color:#000!important;box-shadow:0
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Fully Private ]</div>
 <form id="join-form"><label for="username">Username</label><input id="username" maxlength="24" minlength="2" placeholder="Enter a Username" autocomplete="nickname" required>
 <label for="code">Secret room code</label><input id="code" maxlength="24" minlength="4" placeholder="XYZ123" autocomplete="off" required>
+<div class="cf-turnstile" id="captcha-box" data-sitekey="0x4AAAAAAGLIYuJLbHkd5AwK" data-theme="dark" data-callback="onCaptchaOk" data-expired-callback="onCaptchaExpired" data-error-callback="onCaptchaExpired" style="margin:12px 0"></div>
 <button class="btn primary" id="join-btn" type="submit">JOIN / CREATE ROOM</button><div id="err" role="alert"></div></form>
 <div class="hint">Enter any 4 or 8 digit code and create the room, then share this code with your friends. Keep the code private. We provides end-to-end encryption.</div>
 </div><!-- Close .card; leave the original room form and styling unchanged. -->
@@ -825,10 +827,17 @@ let reactionChannel=null, recording=null, recordingChunks=[], recordingStartedAt
 function status(s){$("status").textContent=s}
 function err(s){$("err").textContent=s}
 function empty(){if(!$("messages").children.length){let e=document.createElement("div");e.className="empty";e.textContent="— start of conversation —";$("messages").append(e)}}
+let captchaToken=null;
+function onCaptchaOk(token){captchaToken=token}
+function onCaptchaExpired(){captchaToken=null}
+function resetCaptcha(){captchaToken=null;try{if(window.turnstile)window.turnstile.reset()}catch{}}
 async function auth(){
  let {data,error}=await sb.auth.getSession();if(error)throw error;
  if(data.session){user=data.session.user;return}
- let r=await sb.auth.signInAnonymously();if(r.error)throw r.error;user=r.data.user;
+ if(!captchaToken)throw new Error("Please complete the captcha check first.");
+ let r=await sb.auth.signInAnonymously({options:{captchaToken}});
+ resetCaptcha(); // a captcha token works only once
+ if(r.error)throw r.error;user=r.data.user;
 }
 async function roomJoin(code,name){
  let r=await sb.rpc("join_chat_room",{p_code:code,p_username:name});
