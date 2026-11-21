@@ -692,6 +692,83 @@ body.theme-light #join-form label{color:#fff!important;-webkit-text-fill-color:#
 body.theme-light #join-form input::placeholder{color:rgba(255,255,255,.9)!important;-webkit-text-fill-color:rgba(255,255,255,.9)!important;text-shadow:0 0 5px rgba(255,255,255,.35);opacity:1}
 body.theme-light #join-form input{border:2px solid #000!important;box-shadow:0 0 0 1px rgba(0,0,0,.35)!important}
 body.theme-light #join-form input:focus{border-color:#000!important;box-shadow:0 0 0 3px rgba(127,252,240,.35)!important}
+
+/* ===== MOBILE SIZE TUNING (phones only, colors/themes untouched) ===== */
+@media (max-width:680px){
+  body{font-size:12.5px}
+  /* join screen */
+  #join{padding:12px!important}
+  .card{padding:18px!important;border-radius:18px!important}
+  #join .logo{font-size:16px!important}
+  .sub{font-size:10px!important;margin:5px 0 16px!important}
+  label{font-size:10px!important;margin:10px 0 5px!important}
+  input{font-size:13px!important;padding:9px 11px!important;border-radius:10px!important}
+  .btn{font-size:12px!important;padding:9px 12px!important;border-radius:9px!important}
+  .primary{margin-top:12px!important}
+  #err{font-size:11px!important;margin-top:8px!important}
+  .hint{font-size:10px!important;line-height:1.55!important;margin-top:12px!important}
+  /* chat header / room card */
+  .side{padding:7px 9px!important;gap:5px!important}
+  .side .logo{font-size:11px!important}
+  .room{padding:5px 8px!important}
+  .label{font-size:9px!important}
+  .roomcode{font-size:14px!important}
+  .online{font-size:10px!important}
+  .member{font-size:11px!important;padding:3px 6px!important}
+  .leave{font-size:11px!important;padding:6px 8px!important}
+  .top{padding:7px 9px!important;gap:5px!important}
+  .muted,#status{font-size:10px!important}
+  .callbtn{font-size:10px!important;padding:5px 7px!important;border-radius:8px!important}
+  /* messages */
+  .messages{padding:8px!important;gap:7px!important}
+  .msg{font-size:12.5px!important;padding:7px 9px!important}
+  .head{font-size:9px!important;gap:8px!important}
+  .empty{font-size:11px!important}
+  .file-action{font-size:10px!important;padding:3px 8px!important}
+  /* composer */
+  .composer{padding:6px!important;gap:5px!important}
+  .composer .icon{min-width:34px!important;min-height:38px!important;padding:4px!important;font-size:14px!important;border-radius:9px!important}
+  .composer input#message{font-size:13px!important;padding:8px 10px!important}
+  .foot{font-size:9px!important;padding:2px 9px 6px!important}
+  /* popups / call screen */
+  .modal{padding:15px!important}
+  .modal h2{font-size:14px!important}
+  .modal p{font-size:11px!important}
+  .modal-actions .btn,.modal-actions button{font-size:11.5px!important;padding:7px 11px!important}
+  .call-option{font-size:12px!important;padding:8px!important}
+  #call-title{font-size:13px!important}
+  .hangup{font-size:12px!important;padding:7px 12px!important}
+  /* contact + android download */
+  .hacker-btn{font-size:11px!important}
+  .btn-content{padding:7px 12px!important}
+  .btn-text{font-size:10px!important}
+  .android-download-wrapper{padding:15px 12px!important}
+  .android-download-title{font-size:16px!important}
+  .android-download-description{font-size:11.5px!important;margin-bottom:12px!important}
+  .android-download-btn{font-size:11.5px!important;padding:9px 16px!important}
+  .android-download-note{font-size:10px!important}
+}
+
+/* ===== CINEMATIC RED LOGO: root@cr3cka-chat:~# ===== */
+.logo,.logo span,
+body.theme-light .logo,body.theme-light .logo span{
+  background:none!important;background-image:none!important;
+  -webkit-background-clip:border-box!important;background-clip:border-box!important;
+  color:#ff2a3d!important;-webkit-text-fill-color:#ff2a3d!important;
+  text-shadow:0 0 6px #ff2a3d99,0 0 18px #e1081f66,0 0 38px #b0001844!important;
+  letter-spacing:.02em!important;
+}
+.logo{animation:logoRedPulse 3.6s ease-in-out infinite}
+@keyframes logoRedPulse{
+  0%,100%{text-shadow:0 0 6px #ff2a3d99,0 0 18px #e1081f66,0 0 38px #b0001844}
+  50%{text-shadow:0 0 4px #ff2a3d70,0 0 12px #e1081f44,0 0 26px #b0001828}
+  93%{opacity:1}94%{opacity:.82}95%{opacity:1}96.5%{opacity:.9}97.5%{opacity:1}
+}
+body.theme-light .logo,body.theme-light .logo span{
+  color:#d90f24!important;-webkit-text-fill-color:#d90f24!important;
+  text-shadow:0 0 8px #ff2a3d55,0 0 20px #c4001a33!important;
+}
+@media (prefers-reduced-motion:reduce){.logo{animation:none!important}}
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Fully Private ]</div>
