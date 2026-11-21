@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080b14"><title>Cr3cka Chat | Online Chat Rooms</title>
+<meta name="theme-color" content="#04101a"><title>Cr3cka Chat | Online Chat Rooms</title>
 <meta name="description" content="Connect with friends through Cr3cka Chat, a browser-based chat platform with room codes, messaging, and audio or video calls.">
 <link rel="canonical" href="https://cr3cka.in/">
 <link rel="icon" type="image/png" sizes="48x48"
@@ -411,6 +411,286 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   }
 }
 
+
+/* CR3CKA CHAT — ANDROID APP DOWNLOAD SECTION */
+.android-download-wrapper {
+  width: calc(100% - 40px);
+  max-width: 900px;
+  margin: 18px auto 28px;
+  padding: 22px 20px;
+  text-align: center;
+  background: linear-gradient(145deg, #080d0e, #050505);
+  border: 1px solid rgba(0, 245, 255, 0.28);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.06);
+  box-sizing: border-box;
+}
+
+.android-download-title {
+  color: #00f5ff;
+  font-size: clamp(19px, 3vw, 25px);
+  font-weight: 800;
+  margin: 0 0 8px;
+  text-shadow: 0 0 12px rgba(0, 245, 255, 0.2);
+}
+
+.android-download-description {
+  color: #929ba5;
+  font-size: 13px;
+  margin: 0 0 17px;
+}
+
+.android-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 23px;
+  color: #000 !important;
+  background: #00e5ef;
+  border: 1px solid #00f5ff;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  text-decoration: none !important;
+  transition: .25s ease;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.15);
+}
+
+.android-download-btn:hover {
+  background: #fff;
+  color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
+}
+
+.android-download-note {
+  color: #737d87;
+  font-size: 11px;
+  margin: 13px 0 0;
+}
+
+.android-download-note a {
+  color: #00f5ff;
+  text-decoration: none;
+}
+
+.android-download-note a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .android-download-wrapper {
+    width: 100%;
+    margin: 15px 0 22px;
+    padding: 19px 13px;
+  }
+
+  .android-download-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+
+
+
+/* IMAGE THEME (default): dark navy -> teal/green gradient with glossy spheres, matching rbg.avif.
+   Pure CSS (vector) so it stays sharp at 4K. Fonts unchanged. Dark mode = original black/neon theme. */
+html.theme-light,body.theme-light{color-scheme:dark;--bg:#04101a;--p:#07141f;--line:rgba(120,255,235,.25);--g:#7ffcf0;--t:#fff;--m:rgba(255,255,255,.75);--r:#ff7a90;--accent2:#7ffcf0;--glow:transparent;color:#fff!important}
+html.theme-light{background:#04101a!important;background-image:none!important}
+body.theme-light{background:transparent!important;background-image:none!important}
+body.theme-light::before{content:"";display:block!important;position:fixed;top:0;left:0;right:0;bottom:0;width:auto;height:auto;min-width:0;min-height:0;margin:0;border-radius:0;filter:none;opacity:1;animation:none;transform:none;z-index:-1;pointer-events:none;background:
+  radial-gradient(circle calc(23vmin*.42) at calc(76vw - 23vmin*.34) calc(-9vh - 23vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 23vmin at 76vw -9vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(circle calc(5.4vmin*.42) at calc(11vw - 5.4vmin*.34) calc(23vh - 5.4vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 5.4vmin at 11vw 23vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(circle calc(27vmin*.42) at calc(1vw - 27vmin*.34) calc(99vh - 27vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 27vmin at 1vw 99vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(circle calc(9vmin*.42) at calc(36vw - 9vmin*.34) calc(95vh - 9vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 9vmin at 36vw 95vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(circle calc(8vmin*.42) at calc(67vw - 8vmin*.34) calc(76vh - 8vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 8vmin at 67vw 76vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(circle calc(19vmin*.42) at calc(97vw - 19vmin*.34) calc(69vh - 19vmin*.38),rgba(255,255,255,.95) 0%,rgba(220,255,250,.55) 38%,rgba(255,255,255,0) 100%),
+  radial-gradient(circle 19vmin at 97vw 69vh,#6dfbe4 0%,#25d8b8 34%,#0f9a98 62%,#0a5568 84%,#06283a 97%,rgba(6,40,58,0) 100%),
+  radial-gradient(ellipse 36vw 30vh at 21vw 66vh,rgba(140,230,255,.92) 0%,rgba(70,205,235,.45) 52%,rgba(0,0,0,0) 100%),
+  radial-gradient(ellipse 42vw 34vh at 55vw 58vh,rgba(14,190,130,.85) 0%,rgba(10,140,110,.4) 55%,rgba(0,0,0,0) 100%),
+  radial-gradient(ellipse 38vw 38vh at 84vw 16vh,rgba(46,84,160,.8) 0%,rgba(24,50,110,.4) 55%,rgba(0,0,0,0) 100%),
+  radial-gradient(ellipse 30vw 32vh at 92vw 74vh,rgba(8,150,112,.55) 0%,rgba(0,0,0,0) 100%),
+  linear-gradient(135deg,#02060b 0%,#05111b 50%,#02080d 100%)!important;background-repeat:no-repeat!important}
+body.theme-light::after{display:none!important}
+body.theme-light *{color:#fff!important;text-shadow:none!important;-webkit-text-fill-color:#fff!important}
+body.theme-light .sub,
+body.theme-light .hint,
+body.theme-light .label,
+body.theme-light .muted,
+body.theme-light .foot,
+body.theme-light .empty,
+body.theme-light .voice-label,
+body.theme-light label,
+body.theme-light .head{color:rgba(255,255,255,.76)!important;-webkit-text-fill-color:rgba(255,255,255,.76)!important}
+body.theme-light .logo,
+body.theme-light .roomcode,
+body.theme-light .online,
+body.theme-light .modal h2,
+body.theme-light #about-cr3cka-chat h1,
+body.theme-light #about-cr3cka-chat h2,
+body.theme-light .android-download-title,
+body.theme-light .android-download-note a,
+body.theme-light #about-cr3cka-chat a{color:#7ffcf0!important;-webkit-text-fill-color:#7ffcf0!important}
+body.theme-light .logo{background:none!important;background-image:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important}
+body.theme-light input::placeholder,body.theme-light textarea::placeholder{color:rgba(255,255,255,.55)!important;-webkit-text-fill-color:rgba(255,255,255,.55)!important;opacity:1}
+body.theme-light .card,
+body.theme-light .side,
+body.theme-light .top,
+body.theme-light .composer,
+body.theme-light .android-download-wrapper,
+body.theme-light #about-cr3cka-chat{background:rgba(6,18,28,.62)!important;background-image:none!important;border:1px solid rgba(120,255,235,.24)!important;box-shadow:0 12px 40px rgba(0,0,0,.35)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.theme-light #join,
+body.theme-light .main,
+body.theme-light .messages,
+body.theme-light .members,
+body.theme-light .member{background:transparent!important;background-image:none!important;box-shadow:none!important}
+body.theme-light #chat{background:rgba(2,9,15,.38)!important;background-image:none!important;border-color:rgba(120,255,235,.12)!important;box-shadow:none!important}
+body.theme-light .foot{background:rgba(4,14,22,.6)!important;background-image:none!important;box-shadow:none!important}
+body.theme-light .room,
+body.theme-light .call-option,
+body.theme-light .voice-note{background:rgba(8,26,38,.7)!important;background-image:none!important;border:1px solid rgba(120,255,235,.26)!important;box-shadow:none!important}
+body.theme-light .modal{background:rgba(5,15,24,.94)!important;background-image:none!important;border:1px solid rgba(120,255,235,.3)!important;box-shadow:0 20px 70px rgba(0,0,0,.55)!important}
+body.theme-light .modalback{background:rgba(0,6,12,.6)!important}
+body.theme-light #call-stage{background:rgba(2,8,14,.9)!important;background-image:none!important;backdrop-filter:none!important}
+body.theme-light .msg,
+body.theme-light .reaction-picker,
+body.theme-light .reaction-chip,
+body.theme-light .shared-file-card{background:rgba(8,26,38,.8)!important;background-image:none!important;border:1px solid rgba(120,255,235,.22)!important;box-shadow:none!important}
+body.theme-light .msg.mine,
+body.theme-light .reaction-chip.mine{background:rgba(14,96,98,.6)!important;border-color:rgba(120,255,235,.5)!important}
+body.theme-light input,
+body.theme-light textarea,
+body.theme-light select{background:rgba(3,12,20,.6)!important;border:1px solid rgba(120,255,235,.35)!important}
+body.theme-light input:focus,
+body.theme-light textarea:focus,
+body.theme-light select:focus{border-color:#7ffcf0!important;box-shadow:0 0 0 2px rgba(127,252,240,.25)!important}
+body.theme-light .video-tile,
+body.theme-light .audio-person-card{background:rgba(4,14,22,.82)!important;background-image:none!important;border:1px solid rgba(120,255,235,.26)!important;box-shadow:none!important}
+body.theme-light .audio-avatar{background:rgba(10,60,64,.7)!important;border-color:#7ffcf0!important;box-shadow:none!important}
+body.theme-light .audio-person-card:before{background:linear-gradient(90deg,transparent,#7ffcf0,transparent)!important}
+body.theme-light .audio-person-status:before{background:#4dffc3!important;box-shadow:0 0 9px #4dffc3!important}
+body.theme-light #about-cr3cka-chat h1{border-bottom:1px dashed rgba(120,255,235,.3)!important}
+body.theme-light #about-cr3cka-chat a{border:1px solid rgba(120,255,235,.4)!important}
+body.theme-light .android-download-note a{text-decoration:underline!important}
+body.theme-light button,
+body.theme-light .btn,
+body.theme-light .btn.primary,
+body.theme-light .btn.secondary,
+body.theme-light .primary,
+body.theme-light .icon,
+body.theme-light .callbtn,
+body.theme-light .callbtn.video,
+body.theme-light .send,
+body.theme-light .hangup,
+body.theme-light .leave,
+body.theme-light .kick-user,
+body.theme-light #theme-toggle,
+body.theme-light a.android-download-btn{background:#fff!important;background-image:none!important;color:#000!important;-webkit-text-fill-color:#000!important;border:2px solid #000!important;box-shadow:0 4px 14px rgba(0,0,0,.35)!important;backdrop-filter:none!important}
+body.theme-light button:hover:not(:disabled),
+body.theme-light .btn:hover:not(:disabled),
+body.theme-light .btn.primary:hover:not(:disabled),
+body.theme-light .btn.secondary:hover:not(:disabled),
+body.theme-light .primary:hover:not(:disabled),
+body.theme-light .icon:hover:not(:disabled),
+body.theme-light .callbtn:hover:not(:disabled),
+body.theme-light .callbtn.video:hover:not(:disabled),
+body.theme-light .send:hover:not(:disabled),
+body.theme-light .hangup:hover:not(:disabled),
+body.theme-light .leave:hover:not(:disabled),
+body.theme-light .kick-user:hover:not(:disabled),
+body.theme-light #theme-toggle:hover:not(:disabled),
+body.theme-light a.android-download-btn:hover{background:#e9fffc!important;border-color:#000!important;box-shadow:0 0 0 3px rgba(127,252,240,.5),0 6px 18px rgba(0,0,0,.4)!important}
+body.theme-light .reaction-chip{border-width:1px!important;box-shadow:none!important}
+body.theme-light .hacker-contact-wrapper .hacker-btn .btn-content,
+body.theme-light .hacker-contact-wrapper .hacker-btn .btn-text,
+body.theme-light .hacker-contact-wrapper .hacker-btn:hover .btn-content,
+body.theme-light .hacker-contact-wrapper .hacker-btn:hover .btn-text{color:#ff0000!important;-webkit-text-fill-color:#ff0000!important;text-shadow:none!important;opacity:1!important;visibility:visible!important}
+
+/* Text/icons inside white buttons stay black */
+body.theme-light button *,body.theme-light a.android-download-btn *,body.theme-light #theme-toggle *{color:#000!important;-webkit-text-fill-color:#000!important}
+
+/* BUTTONS: same navy -> teal/green gradient as the page theme (email button untouched) */
+body.theme-light button,
+body.theme-light .btn,
+body.theme-light .btn.primary,
+body.theme-light .btn.secondary,
+body.theme-light .primary,
+body.theme-light .icon,
+body.theme-light .callbtn,
+body.theme-light .callbtn.video,
+body.theme-light .send,
+body.theme-light .hangup,
+body.theme-light .leave,
+body.theme-light .kick-user,
+body.theme-light #theme-toggle,
+body.theme-light a.android-download-btn{background:radial-gradient(circle at 15% 130%,rgba(140,230,255,.6) 0%,rgba(140,230,255,0) 60%),linear-gradient(120deg,#07141f 0%,#0b4d58 48%,#14c79a 100%)!important;background-color:#0b4d58!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:2px solid #000!important;box-shadow:0 0 0 1px rgba(127,252,240,.55),0 4px 14px rgba(0,0,0,.4)!important}
+body.theme-light button:hover:not(:disabled),
+body.theme-light .btn:hover:not(:disabled),
+body.theme-light .btn.primary:hover:not(:disabled),
+body.theme-light .btn.secondary:hover:not(:disabled),
+body.theme-light .primary:hover:not(:disabled),
+body.theme-light .icon:hover:not(:disabled),
+body.theme-light .callbtn:hover:not(:disabled),
+body.theme-light .callbtn.video:hover:not(:disabled),
+body.theme-light .send:hover:not(:disabled),
+body.theme-light .hangup:hover:not(:disabled),
+body.theme-light .leave:hover:not(:disabled),
+body.theme-light .kick-user:hover:not(:disabled),
+body.theme-light #theme-toggle:hover:not(:disabled),
+body.theme-light a.android-download-btn:hover{background:radial-gradient(circle at 15% 130%,rgba(170,240,255,.75) 0%,rgba(170,240,255,0) 60%),linear-gradient(120deg,#0a1f2c 0%,#0f6670 48%,#2be3b4 100%)!important;background-color:#0f6670!important;border-color:#000!important;box-shadow:0 0 0 2px rgba(127,252,240,.8),0 6px 20px rgba(20,199,154,.35)!important}
+body.theme-light button *,
+body.theme-light a.android-download-btn *,
+body.theme-light #theme-toggle *{color:#fff!important;-webkit-text-fill-color:#fff!important}
+body.theme-light .reaction-chip{box-shadow:none!important}
+
+/* BUTTONS: pure black border (no mint ring) + highlighted white text */
+body.theme-light button,
+body.theme-light .btn,
+body.theme-light .btn.primary,
+body.theme-light .btn.secondary,
+body.theme-light .primary,
+body.theme-light .icon,
+body.theme-light .callbtn,
+body.theme-light .callbtn.video,
+body.theme-light .send,
+body.theme-light .hangup,
+body.theme-light .leave,
+body.theme-light .kick-user,
+body.theme-light #theme-toggle,
+body.theme-light a.android-download-btn{border:2px solid #000!important;box-shadow:0 4px 14px rgba(0,0,0,.45)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 6px rgba(255,255,255,.5),0 1px 2px rgba(0,0,0,.65)!important}
+body.theme-light button:hover:not(:disabled),
+body.theme-light .btn:hover:not(:disabled),
+body.theme-light .btn.primary:hover:not(:disabled),
+body.theme-light .btn.secondary:hover:not(:disabled),
+body.theme-light .primary:hover:not(:disabled),
+body.theme-light .icon:hover:not(:disabled),
+body.theme-light .callbtn:hover:not(:disabled),
+body.theme-light .callbtn.video:hover:not(:disabled),
+body.theme-light .send:hover:not(:disabled),
+body.theme-light .hangup:hover:not(:disabled),
+body.theme-light .leave:hover:not(:disabled),
+body.theme-light .kick-user:hover:not(:disabled),
+body.theme-light #theme-toggle:hover:not(:disabled),
+body.theme-light a.android-download-btn:hover{border-color:#000!important;box-shadow:0 6px 18px rgba(0,0,0,.55)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 6px rgba(255,255,255,.5),0 1px 2px rgba(0,0,0,.65)!important}
+body.theme-light button *,
+body.theme-light a.android-download-btn *,
+body.theme-light #theme-toggle *{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 6px rgba(255,255,255,.5),0 1px 2px rgba(0,0,0,.65)!important}
+body.theme-light .reaction-chip{box-shadow:none!important}
+
+/* JOIN FORM ONLY: highlighted white caption/labels/placeholders + black-bordered inputs */
+body.theme-light #join .sub,
+body.theme-light #join-form label{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 6px rgba(255,255,255,.45)!important}
+body.theme-light #join-form input::placeholder{color:rgba(255,255,255,.9)!important;-webkit-text-fill-color:rgba(255,255,255,.9)!important;text-shadow:0 0 5px rgba(255,255,255,.35);opacity:1}
+body.theme-light #join-form input{border:2px solid #000!important;box-shadow:0 0 0 1px rgba(0,0,0,.35)!important}
+body.theme-light #join-form input:focus{border-color:#000!important;box-shadow:0 0 0 3px rgba(127,252,240,.35)!important}
 </style></head><body>
 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch between light and dark themes"><span class="theme-icon">☀️</span><span id="theme-label">Light mode</span></button>
 <section id="join"><div class="card"><div class="logo">root@cr3cka-chat:~#</div><div class="sub">[ Realtime Room // Fully Private ]</div>
@@ -431,6 +711,42 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   </a>
 </div>
       
+<!-- Cr3cka Chat Android App Download -->
+<section class="android-download-wrapper" aria-label="Download Cr3cka Chat Android app">
+
+  <h2 class="android-download-title">
+    Cr3cka Chat for Android
+  </h2>
+
+  <p class="android-download-description">
+    Take your conversations anywhere. Download the official Android app.
+  </p>
+
+  <a
+    class="android-download-btn"
+    href="https://github.com/hacker7786/Cr3cka-chat/releases/latest"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Download Cr3cka Chat for Android"
+  >
+    <span aria-hidden="true">⬇</span>
+    DOWNLOAD FOR ANDROID
+  </a>
+
+  <p class="android-download-note">
+    Version 1.0.0 · Free Download · Android
+    <br>
+    Official release:
+    <a
+      href="https://github.com/hacker7786/Cr3cka-chat/releases"
+      target="_blank"
+      rel="noopener noreferrer"
+    >GitHub Releases</a>
+  </p>
+
+</section>
+<!-- End Android App Download Section -->
+
 <!-- About section: landing page only -->
 <section id="about-cr3cka-chat">
 
@@ -493,10 +809,10 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const $ = id => document.getElementById(id);
 // Theme toggle is independent of chat state and remembers the user's preference.
 (function initTheme(){
- const saved=(()=>{try{return localStorage.getItem("cr3cka-theme")}catch{return null}})();
- if(saved==="light")document.body.classList.add("theme-light");
- function update(){const light=document.body.classList.contains("theme-light");$("theme-label").textContent=light?"Dark mode":"Light mode";$("theme-toggle").querySelector(".theme-icon").textContent=light?"🌙":"☀️";$("theme-toggle").setAttribute("aria-label",light?"Switch to dark theme":"Switch to light theme");document.querySelector('meta[name="theme-color"]')?.setAttribute("content",light?"#f5f7ff":"#080b14")}
- $("theme-toggle").addEventListener("click",()=>{document.body.classList.toggle("theme-light");try{localStorage.setItem("cr3cka-theme",document.body.classList.contains("theme-light")?"light":"dark")}catch{}update()});update();
+ const saved=(()=>{try{return localStorage.getItem("cr3cka-theme-v2")}catch{return null}})();
+ if(saved!=="dark")document.body.classList.add("theme-light");
+ function update(){const light=document.body.classList.contains("theme-light");document.documentElement.classList.toggle("theme-light",light);$("theme-label").textContent=light?"Dark mode":"Light mode";$("theme-toggle").querySelector(".theme-icon").textContent=light?"🌙":"☀️";$("theme-toggle").setAttribute("aria-label",light?"Switch to dark theme":"Switch to light theme");document.querySelector('meta[name="theme-color"]')?.setAttribute("content",light?"#04101a":"#000000")}
+ $("theme-toggle").addEventListener("click",()=>{document.body.classList.toggle("theme-light");try{localStorage.setItem("cr3cka-theme-v2",document.body.classList.contains("theme-light")?"light":"dark")}catch{}update()});update();
 })();
 let user=null, roomId=null, myName="", roomCode="", presenceChannel=null, dbChannel=null;
 let isRoomAdmin=false, joinRequestPoll=null, adminRequestPoll=null, membershipPoll=null, pendingRequestId=null, seenAdminRequests=new Set();
